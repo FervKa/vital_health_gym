@@ -1,18 +1,16 @@
 from datetime import datetime, date
-from commons import validate_id
-
-users_list = []
+from commons import validate_id, users_list
 
 
 class Client:
     def __init__(self, id: int, name: str, last_name: str, age: int, membership_date):
         self.id = validate_id(id)
+        self.age = age
         self.name = name
         self.last_name = last_name
-        self.age = age
-        self.is_training = False
+        """ self.is_training = False """
         self.membership_active = False
-        self.membership_date = membership_date
+        """ self.membership_date = membership_date """
 
     @property
     def get_id(self):
@@ -33,13 +31,13 @@ class Client:
     def set_name(self, _name):
         self.name = _name
 
-    @property
+    """ @property
     def get_membership_date(self):
         return self.membership_date
 
     @get_membership_date.setter
-    def set_membership_date(self, date):
-        self.membership_date = date
+    def set_membership_date(self, _date):
+        self.membership_date = _date
 
     @property
     def get_membership_active(self):
@@ -47,14 +45,15 @@ class Client:
 
     @get_membership_active.setter
     def set_membership_active(self, status):
-        self.get_membership_active = status
+        self.get_membership_active = status """
 
-    def handle_traning(self):
+    """ def handle_traning(self):
         if not self.is_training:
             print(f"User {self.name} {self.last_name} joined the gym")
         else:
             print(f"User {self.name} {self.last_name} left the gym")
         self.is_training = not self.is_training
+ """
 
     def handle_active(self):
         print(
@@ -63,11 +62,6 @@ class Client:
         self.membership_active = not self.membership_active
         print(
             f"Now, {self.name} {self.last_name} is { 'Active' if self.membership_active else 'Inactive'}"
-        )
-
-    def create_instance(self):
-        return Client(
-            self.id, self.name, self.last_name, self.age, self.membership_date
         )
 
 
@@ -86,9 +80,9 @@ def save_user(users):
 
 firts_user = Client(3291121, "Oscar", "Murillo", 23, "2020-01-30")
 second_user = Client(3123223, "Carlos", "Jaramillo", 32, "2021-03-20")
-""" firts_user.handle_traning() """
-save_user([firts_user, second_user])
-printing_users()
-print(firts_user.get_membership_active)
+third_user = Client(2322012, "Santiago", "Molina", 33, "2019-05-24")
+""" save_user([firts_user, second_user])
+printing_users() """
+""" print(firts_user.get_membership_active)
 firts_user.handle_active()
-print(firts_user.get_membership_active)
+print(firts_user.get_membership_active) """

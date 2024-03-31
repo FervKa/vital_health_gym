@@ -1,4 +1,7 @@
 import datetime
+from commons import users_list
+
+general_users = users_list
 
 
 class General_report:
