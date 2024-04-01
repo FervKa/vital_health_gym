@@ -1,15 +1,8 @@
 import general_report
 import user_class_gym
+from commons import Num_input
 
 #---------- Manejo de excepciones en el input ----------#
-def Num_input(m_error):
-    while True:
-        try:
-            entrada = input("Ingresa un número entero: ")
-            num = int(entrada)
-            return num # Salir del bucle si la conversión fue exitosa
-        except ValueError:
-            print(m_error)
     
 while True:
     print("----------- Bienvenido -----------")
