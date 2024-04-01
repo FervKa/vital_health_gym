@@ -14,3 +14,13 @@ def save_user(users, class_type, users_list):
     elif isinstance(users, list):
         for user in users:
             users_list.append(user)
+
+
+def Num_input(m_error):
+    while True:
+        try:
+            entrada = input("Ingresa un número entero: ")
+            num = int(entrada)
+            return num  # Salir del bucle si la conversión fue exitosa
+        except ValueError:
+            print(m_error)
