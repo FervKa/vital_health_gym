@@ -8,7 +8,7 @@ def validate_id(id):
 users_list = []
 
 
-def save_user(users, class_type, users_list):
+def save_user(users, class_type):
     if isinstance(users, class_type):
         users_list.append(users)
     elif isinstance(users, list):
@@ -16,11 +16,11 @@ def save_user(users, class_type, users_list):
             users_list.append(user)
 
 
-def Num_input(m_error):
+def options_input(m_error):
     while True:
         try:
             entrada = input("Ingresa un número entero: ")
-            num = int(entrada)
-            return num  # Salir del bucle si la conversión fue exitosa
+            option_input = int(entrada)
+            return option_input  # Salir del bucle si la conversión fue exitosa
         except ValueError:
             print(m_error)
