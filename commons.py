@@ -1,3 +1,10 @@
+from datetime import datetime
+
+
+def get_current_date():
+    return datetime.now().strftime("%Y-%m-%d")
+
+
 def validate_id(id):
     if isinstance(id, int):
         return id

@@ -1,18 +1,39 @@
-import general_report
-import user_class_gym
 from gym_class import Gym
 from commons import options_input
-from initial_users import dummy_users
+from initial_data import dummy_users, dummy_lockers, dummy_memberships
+from membership_class import Membership
+
+# ------------ Creating the initial memberships ------------#
+
+# ------------ Creating the initial lockers ------------#
+
 
 # ------------ Creating the initial gym ------------#
-michael_gym = Gym(3221231, "Michael Gym", "Calle 123", dummy_users, [])
-
+michael_gym = Gym(
+    3221231, "Michael Gym", "Calle 123", dummy_users, dummy_lockers, dummy_memberships
+)
 # ------------ Creating the initial users ------------#
+""" michael_gym.add_client(
+    999999,
+    "Julian",
+    "Caribe",
+    19,
+    "1212121212",
+    True,
+    three_months_membershipership,
+    False,
+) """
+michael_gym.get_membership_list
+""" michael_gym.update_membership_date(999999, three_months_membershipership, "2023-05-27") """
+""" for user in michael_gym.get_clients_list:
+    print(
+        f"Name: {user.get_name}, Membership: {user.get_membership_data.get_date_last_payment}"
+    ) """
 
 
 # ---------- Manejo de excepciones en el input ----------#
 
-while True:
+""" while True:
     print("----------- Bienvenido -----------")
     print("seleccione una opción ingresando el numero índice")
     print("1. Gestión clientes")
@@ -22,8 +43,8 @@ while True:
     print("5. exit")
     print("-----------------------------------------")
 
-    error_message = "Error: Debes ingresar un número entero válido. Intenta nuevamente."
-    op = options_input(error_message)
+    ERROR_MESSAGE = "Error: Debes ingresar un número entero válido. Intenta nuevamente."
+    op = options_input(ERROR_MESSAGE)
 
     if op == 1:
         while True:
@@ -35,7 +56,7 @@ while True:
             print("4. Actualizar datos del cliente.")
             print("5. Volver al menú anterior")
             print("-----------------------------------------")
-            op1 = options_input(error_message)
+            op1 = options_input(ERROR_MESSAGE)
             if op1 == 5:
                 break
 
@@ -48,7 +69,7 @@ while True:
             print("3. Deshabilitar membresía")
             print("4. Volver al menú anterior")
             print("-----------------------------------------")
-            op2 = options_input(error_message)
+            op2 = options_input(ERROR_MESSAGE)
             if op2 == 4:
                 break
     if op == 3:
@@ -63,10 +84,10 @@ while True:
             print("6. Reporte general diario")
             print("7. Volver al menú anterior")
             print("-----------------------------------------")
-            error_message = (
+            ERROR_MESSAGE = (
                 "Error: Debes ingresar un número entero válido. Intenta nuevamente."
             )
-            op3 = options_input(error_message)
+            op3 = options_input(ERROR_MESSAGE)
             if op3 == 3:
                 while True:
                     print(
@@ -77,7 +98,7 @@ while True:
                     print("2. Inactivos")
                     print("3. Volver al menú anterior")
                     print("-----------------------------------------")
-                    op3_1 = options_input(error_message)
+                    op3_1 = options_input(ERROR_MESSAGE)
                     if op3_1 == 3:
                         break
             if op3 == 7:
@@ -87,8 +108,9 @@ while True:
             print("----------- Ingreso al gimnasio -----------")
             print("ingrese el documento del usuario que desea verificar")
             print("-----------------------------------------")
-            error_message = "Error: Debes ingresar un documento de indentidad valido, no uses puntos ni espacios."
-            op_id = options_input(error_message)
+            ERROR_MESSAGE = "Error: Debes ingresar un documento de indentidad valido, no uses puntos ni espacios."
+            op_id = options_input(ERROR_MESSAGE)
             break
     if op == 5:
         break
+ """

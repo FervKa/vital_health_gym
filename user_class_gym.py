@@ -1,29 +1,64 @@
 from datetime import datetime, date
-from commons import validate_id, users_list
+from commons import validate_id, users_list, get_current_date
 
 
 class Client:
-    def __init__(self, id: int, name: str, last_name: str, age: int, phone_number = int):
-        self.__id = validate_id(id)
+    def __init__(
+        self,
+        client_id: int,
+        name: str,
+        last_name: str,
+        age: int,
+        phone_number=int,
+        membership_active=False,
+        membership_data=object,
+        is_active=False,
+        created_at=date,
+        date_last_payment=None,
+        is_training=False,
+        locker_data=None,
+    ):
+        self.__client_id = validate_id(client_id)
         self.__name = name
         self.__last_name = last_name
         self.__age = age
         self.__phone_number = phone_number
-        self.__created_at = datetime
-        self.__membership_data = []
+        self.__membership_data = membership_data
         self.__is_training = False
         self.__assigned_locker = 0
-        """self.__membership_active = False"""
+        self.__membership_active = membership_active
+        self.__is_active = is_active
         """ self.membership_date = membership_date """
+        if created_at:
+            self.__created_at = created_at
+        else:
+            self.__created_at = get_current_date()
+        if date_last_payment:
+            self.__date_last_payment = date_last_payment
+        else:
+            self.__date_last_payment = ""
+
+        if locker_data.get_locker_id is not None:
+            self.__assigned_locker = locker_data.get_locker_id
+            """ self.__is_training = locker_data.get("is_training") """
+        else:
+            self.__assigned_locker = None
+
+        if is_training:
+            """ locker_data.set_state(True) """
+            print(locker_data)
+        else:
+            """ locker_data.set_state(False) """
+            print(locker_data)
 
     @property
-    def get_id(self):
-        return self.__id
+    def get__client_id(self):
+        return self.__client_id
 
-    @get_id.setter
+    @get__client_id.setter
     def set_id(self, _id):
         if isinstance(_id, int) and _id >= 0:
-            self.__id = _id
+            self.__client_id = _id
         else:
             raise ValueError("Invalid user ID")
 
@@ -38,7 +73,7 @@ class Client:
     @property
     def get_last_name(self):
         return self.__last_name
-    
+
     @get_last_name.setter
     def set_last_name(self, _last_name):
         self.__last_name = _last_name
@@ -46,49 +81,48 @@ class Client:
     @property
     def get_age(self):
         return self.__age
-    
+
     @get_age.setter
     def set_age(self, _age):
         if isinstance(_age, int) and _age >= 0:
             self.__age = _age
         else:
             raise ValueError("Invalid user age")
-        
+
     @property
     def get_phone_number(self):
         return self.__phone_number
-    
+
     @get_phone_number.setter
     def set_phone_number(self, _phone_number):
         if isinstance(_phone_number, int):
             self.__phone_number = _phone_number
         else:
             raise ValueError("Invalid phone number")
-        
+
     @property
     def get_created_at(self):
         return self.__created_at
-    
+
     @get_created_at.setter
     def set_created_at(self, _created_at):
         self.__created_at = _created_at
 
-
     @property
     def get_membership_data(self):
         return self.__membership_data
-    
+
     @get_membership_data.setter
     def set_membership_data(self, _membership_data):
         if isinstance(_membership_data, dict):
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")
-        
+
     @property
     def get_is_training(self):
         return self.__is_training
-    
+
     @get_is_training.setter
     def set_is_training(self, _is_training):
         if isinstance(_is_training, bool):
@@ -99,16 +133,43 @@ class Client:
     @property
     def get_assigned_locker(self):
         return self.__assigned_locker
-    
+
     @get_assigned_locker.setter
     def set_assigned_locker(self, _get_assigned_locker):
         if isinstance(_get_assigned_locker, int):
             self.__assigned_locker = _get_assigned_locker
         else:
             raise ValueError("Invalid locker number")
-        
+
+    @property
+    def get_membership_active(self):
+        return self.__membership_active
+
+    @get_membership_active.setter
+    def set_membership_active(self, status):
+        self.__membership_active = status
+
+    @property
+    def get_is_active(self):
+        return self.__is_active
+
+    @get_is_active.setter
+    def set_is_active(self, _is_active):
+        if isinstance(_is_active, bool):
+            self.__is_active = _is_active
+        else:
+            raise ValueError("Invalid is_active value")
+
+    @property
+    def get_date_last_payment(self):
+        return self.__date_last_payment
+
+    @get_date_last_payment.setter
+    def set_date_last_payment(self, new_date_last_payment):
+        self.__date_last_payment = new_date_last_payment
 
 
+""" 
 # Crear una lista de objetos Client
 clients = [
     Client(1, "John", "Doe", 30, 1234567890),
@@ -127,9 +188,9 @@ for client in clients:
     client.set_phone_number = client.get_phone_number + 1  # Incrementar el número de teléfono en 1
 
     print(f"Updated Age: {client.get_age}, Updated Phone Number: {client.get_phone_number}")
+ """
 
-
-    """ @property
+""" @property
     def get_membership_date(self):
         return self.membership_date
 
@@ -145,7 +206,7 @@ for client in clients:
     def set_membership_active(self, status):
         self.get_membership_active = status """
 
-    """ def handle_traning(self):
+""" def handle_traning(self):
         if not self.is_training:
             print(f"User {self.name} {self.last_name} joined the gym")
         else:
@@ -179,7 +240,7 @@ def save_user(users):
 firts_user = Client(3291121, "Oscar", "Murillo", 23, "2020-01-30")
 second_user = Client(3123223, "Carlos", "Jaramillo", 32, "2021-03-20")
 third_user = Client(2322012, "Santiago", "Molina", 33, "2019-05-24")
-"""" save_user([firts_user, second_user])"
+""" " save_user([firts_user, second_user])"
 # printing_users() """
 # """ print(firts_user.get_membership_active)
 # firts_user.handle_active()

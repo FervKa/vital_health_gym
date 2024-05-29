@@ -1,0 +1,138 @@
+from user_class_gym import Client
+from membership_class import Membership
+from commons import get_current_date
+from lockers_class import Locker
+
+
+# ------------ Creating the initial lockers ------------#
+dummy_lockers = [
+    Locker(1, "enabled", "blue", "simple", 10000, 3291121),
+    Locker(2, "enabled", "red", "double", 10000, 3123223),
+    Locker(3, "enabled", "green", "simple", 10000, None),
+    Locker(4, "enabled", "blue", "simple", 10000, None),
+    Locker(5, "enabled", "red", "simple", 10000, None),
+    Locker(6, "enabled", "green", "simple", 10000, None),
+    Locker(7, "enabled", "blue", "simple", 10000, None),
+    Locker(8, "enabled", "red", "simple", 10000, None),
+    Locker(9, "enabled", "green", "double", 10000, None),
+    Locker(10, "enabled", "blue", "simple", 10000, None),
+    Locker(11, "enabled", "red", "simple", 10000, None),
+    Locker(12, "enabled", "green", "simple", 10000, None),
+    Locker(13, "enabled", "blue", "simple", 10000, None),
+    Locker(14, "enabled", "red", "double", 10000, None),
+    Locker(15, "enabled", "green", "simple", 10000, None),
+    Locker(16, "enabled", "blue", "double", 10000, None),
+    Locker(17, "enabled", "red", "simple", 10000, None),
+    Locker(18, "enabled", "green", "double", 10000, None),
+    Locker(19, "enabled", "blue", "simple", 10000, None),
+    Locker(20, "enabled", "red", "simple", 10000, None),
+]
+
+
+# ------------ Creating the initial memberships ------------#
+dummy_memberships = [
+    Membership("Daily", True),
+    Membership("Monthly", True),
+    Membership("Three Months", True),
+]
+
+""" client_id: int,
+        name: str,
+        last_name: str,
+        age: int,
+        phone_number=int,
+        membership_active=True,
+        membership_data=object,
+        is_active=True,
+        created_at=date,
+        date_last_payment=None,
+        is_training = True,
+        assigned_locker = None """
+
+# ------------ Creating the initial users ------------#
+dummy_users = [
+    Client(
+        3291121,
+        "Oscar",
+        "Murillo",
+        23,
+        "5555555555",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-05-24",
+        True,
+        dummy_lockers[0],
+    ),
+    Client(
+        3123223,
+        "Carlos",
+        "Jaramillo",
+        32,
+        "2222222222",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-02-24",
+        True,
+        dummy_lockers[1],
+    ),
+    Client(
+        2322012,
+        "Santiago",
+        "Molina",
+        21,
+        "3333333333",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-05-24",
+        True,
+        dummy_lockers[0],
+    ),
+    Client(
+        3332213,
+        "Andrés",
+        "Molina",
+        19,
+        "4444444444",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-05-24",
+        True,
+        dummy_lockers[0],
+    ),
+    Client(
+        5151213,
+        "Jose",
+        "Molina",
+        24,
+        "6666666666",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-05-24",
+        True,
+        dummy_lockers[0],
+    ),
+    Client(
+        6634234,
+        "Fernando",
+        "Espinoza",
+        46,
+        "7777777777",
+        True,
+        dummy_memberships[2],
+        True,
+        get_current_date(),
+        "2024-05-24",
+        True,
+        dummy_lockers[0],
+    ),
+]
