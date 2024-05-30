@@ -2,32 +2,32 @@ from user_class_gym import Client
 from membership_class import Membership
 from commons import get_current_date
 from lockers_class import Locker
+from gym_class import Gym
 
 
 # ------------ Creating the initial lockers ------------#
 dummy_lockers = [
-    Locker(1, "enabled", "blue", "simple", 10000, 3291121),
-    Locker(2, "enabled", "red", "double", 10000, 3123223),
-    Locker(3, "enabled", "green", "simple", 10000, None),
-    Locker(4, "enabled", "blue", "simple", 10000, None),
-    Locker(5, "enabled", "red", "simple", 10000, None),
-    Locker(6, "enabled", "green", "simple", 10000, None),
-    Locker(7, "enabled", "blue", "simple", 10000, None),
-    Locker(8, "enabled", "red", "simple", 10000, None),
-    Locker(9, "enabled", "green", "double", 10000, None),
-    Locker(10, "enabled", "blue", "simple", 10000, None),
-    Locker(11, "enabled", "red", "simple", 10000, None),
-    Locker(12, "enabled", "green", "simple", 10000, None),
-    Locker(13, "enabled", "blue", "simple", 10000, None),
-    Locker(14, "enabled", "red", "double", 10000, None),
-    Locker(15, "enabled", "green", "simple", 10000, None),
-    Locker(16, "enabled", "blue", "double", 10000, None),
-    Locker(17, "enabled", "red", "simple", 10000, None),
-    Locker(18, "enabled", "green", "double", 10000, None),
-    Locker(19, "enabled", "blue", "simple", 10000, None),
-    Locker(20, "enabled", "red", "simple", 10000, None),
+    Locker(1, False, "blue", "simple", 3291121),
+    Locker(2, False, "red", "double", 3123223),
+    Locker(3, False, "green", "simple", 3332213),
+    Locker(4, False, "blue", "simple", 5151213),
+    Locker(5, True, "red", "simple", None),
+    Locker(6, True, "green", "simple", None),
+    Locker(7, True, "blue", "simple", None),
+    Locker(8, True, "red", "simple", None),
+    Locker(9, True, "green", "double", None),
+    Locker(10, True, "blue", "simple", None),
+    Locker(11, True, "red", "simple", None),
+    Locker(12, True, "green", "simple", None),
+    Locker(13, True, "blue", "simple", None),
+    Locker(14, True, "red", "double", None),
+    Locker(15, True, "green", "simple", None),
+    Locker(16, True, "blue", "double", None),
+    Locker(17, True, "red", "simple", None),
+    Locker(18, True, "green", "double", None),
+    Locker(19, True, "blue", "simple", None),
+    Locker(20, True, "red", "simple", None),
 ]
-
 
 # ------------ Creating the initial memberships ------------#
 dummy_memberships = [
@@ -35,19 +35,6 @@ dummy_memberships = [
     Membership("Monthly", True),
     Membership("Three Months", True),
 ]
-
-""" client_id: int,
-        name: str,
-        last_name: str,
-        age: int,
-        phone_number=int,
-        membership_active=True,
-        membership_data=object,
-        is_active=True,
-        created_at=date,
-        date_last_payment=None,
-        is_training = True,
-        assigned_locker = None """
 
 # ------------ Creating the initial users ------------#
 dummy_users = [
@@ -91,7 +78,7 @@ dummy_users = [
         get_current_date(),
         "2024-05-24",
         True,
-        dummy_lockers[0],
+        dummy_lockers[2],
     ),
     Client(
         3332213,
@@ -105,7 +92,7 @@ dummy_users = [
         get_current_date(),
         "2024-05-24",
         True,
-        dummy_lockers[0],
+        dummy_lockers[3],
     ),
     Client(
         5151213,
@@ -119,7 +106,7 @@ dummy_users = [
         get_current_date(),
         "2024-05-24",
         True,
-        dummy_lockers[0],
+        dummy_lockers[4],
     ),
     Client(
         6634234,
@@ -132,7 +119,14 @@ dummy_users = [
         True,
         get_current_date(),
         "2024-05-24",
-        True,
-        dummy_lockers[0],
+        False,
+        None,
     ),
 ]
+
+# ------------- Creating initial gym --------------------#
+michael_gym = Gym(3221231, "Michael Gym", "Calle 123")
+
+michael_gym.set_clients_list = dummy_users
+michael_gym.set_locker_list = dummy_lockers
+michael_gym.set_membership_list = dummy_memberships

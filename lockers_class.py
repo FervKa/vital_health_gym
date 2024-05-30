@@ -1,16 +1,19 @@
 class Locker:
-    def __init__(self, locker_id, state, color, locker_type, price, client_id):
+    def __init__(self, locker_id, locker_state, color, locker_type, client_id):
         self.locker_id = locker_id
-        self.state = state
+        self.locker_state = locker_state
         self.color = color
         self.locker_type = locker_type
-        self.price = price
         if client_id is not None:
             self.client_id = client_id
             self.is_assigned = True
         else:
             self.client_id = None
             self.is_assigned = False
+        if locker_type == "simple":
+            self.locker_price = 5000
+        elif locker_type == "double":
+            self.locker_price = 10000
 
     @property
     def get_locker_id(self):
@@ -21,12 +24,12 @@ class Locker:
         self.locker_id = locker_id
 
     @property
-    def get_state(self):
-        return self.state
+    def get_locker_state(self):
+        return self.locker_state
 
-    @get_state.setter
-    def set_state(self, state):
-        self.state = state
+    @get_locker_state.setter
+    def set_locker_state(self, new_locker_state):
+        self.locker_state = new_locker_state
 
     @property
     def get_color(self):
@@ -45,12 +48,12 @@ class Locker:
         self.locker_type = locker_type
 
     @property
-    def get_price(self):
-        return self.price
+    def get_locker_price(self):
+        return self.locker_price
 
-    @get_price.setter
-    def set_price(self, price):
-        self.price = price
+    @get_locker_price.setter
+    def set_locker_price(self, price):
+        self.locker_price = price
 
     @property
     def get_is_assigned(self):
@@ -66,4 +69,6 @@ class Locker:
 
     @get_client_id.setter
     def set_client_id(self, client_id):
-        self.client_id = client_id
+        if client_id is not None:
+            self.is_assigned = True
+            self.client_id = client_id

@@ -1,35 +1,54 @@
 from gym_class import Gym
-from commons import options_input
-from initial_data import dummy_users, dummy_lockers, dummy_memberships
+from commons import options_input, get_current_date,convert_value
+from initial_data import dummy_users, dummy_lockers, dummy_memberships, michael_gym
 from membership_class import Membership
-
-# ------------ Creating the initial memberships ------------#
-
-# ------------ Creating the initial lockers ------------#
+import inspect
 
 
-# ------------ Creating the initial gym ------------#
-michael_gym = Gym(
-    3221231, "Michael Gym", "Calle 123", dummy_users, dummy_lockers, dummy_memberships
-)
-# ------------ Creating the initial users ------------#
-""" michael_gym.add_client(
+""" for membership in self.membership_list:
+            print("#------------Membership data-----------#")
+            print(
+                f"Membership type: {membership.get_membership_type},\n"
+                f"Membership cost:  {"${:,.0f}".format(membership.get_membership_cost)}"
+            ) 
+"""
+
+michael_gym.add_client(
     999999,
     "Julian",
     "Caribe",
     19,
     "1212121212",
     True,
-    three_months_membershipership,
-    False,
-) """
-michael_gym.get_membership_list
-""" michael_gym.update_membership_date(999999, three_months_membershipership, "2023-05-27") """
-""" for user in michael_gym.get_clients_list:
-    print(
-        f"Name: {user.get_name}, Membership: {user.get_membership_data.get_date_last_payment}"
-    ) """
+    "daily",
+    True,
+    get_current_date(),
+    True
+)
 
+def get_params_peer_class(object_class):
+    params = inspect.signature(object_class).parameters
+    attr_values = {}
+    for param in params:
+        value = input(f"Enter the value for {param}: ")
+        try:
+            attr_values[param] = convert_value(value, param)
+        except ImportWarning as e:
+            print(f"Error converting {param}: {e}")
+            attr_values[param] = value
+
+    class_created = object_class(**attr_values)
+    return class_created
+
+test_gym = get_params_peer_class(Gym)
+
+print(test_gym.get_adress)
+
+""" for param in get_params_peer_class(Gym):
+    print(f"Write the value for: {param.name}")
+    setattr(test_gym, param.name, input())
+    print(param.name)
+    print(test_gym.get_adress)   """
 
 # ---------- Manejo de excepciones en el input ----------#
 

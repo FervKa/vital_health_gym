@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from commons import validate_id, users_list, get_current_date
+from commons import validate_id, get_current_date
 
 
 class Client:
@@ -11,9 +11,9 @@ class Client:
         age: int,
         phone_number=int,
         membership_active=False,
-        membership_data=object,
+        membership_data=None,
         is_active=False,
-        created_at=date,
+        created_at="",
         date_last_payment=None,
         is_training=False,
         locker_data=None,
@@ -22,10 +22,13 @@ class Client:
         self.__name = name
         self.__last_name = last_name
         self.__age = age
-        self.__phone_number = phone_number
+        if len(phone_number) == 10:
+            self.__phone_number = phone_number
+        else:
+            raise ValueError(f"Error: Number must have 10 numbers, in user: {name}")
         self.__membership_data = membership_data
         self.__is_training = False
-        self.__assigned_locker = 0
+        self.__assigned_locker = None
         self.__membership_active = membership_active
         self.__is_active = is_active
         """ self.membership_date = membership_date """
@@ -38,24 +41,30 @@ class Client:
         else:
             self.__date_last_payment = ""
 
-        if locker_data.get_locker_id is not None:
+        if locker_data is not None:
             self.__assigned_locker = locker_data.get_locker_id
+            self.locker_data = locker_data
+            """ print(f"Locker assigned: {self.__assigned_locker}") """
             """ self.__is_training = locker_data.get("is_training") """
         else:
             self.__assigned_locker = None
+            self.locker_data = None
+            """ print(f"Assigned locker: {self.__assigned_locker}") """
 
-        if is_training:
-            """ locker_data.set_state(True) """
-            print(locker_data)
+        if is_training and (locker_data is not None):
+            """print(f"Locker state: {locker_data.get_locker_state}")"""
+            locker_data.set_locker_state = True
+            """ print(f"From training {is_training}: {locker_data.get_locker_id}") """
         else:
-            """ locker_data.set_state(False) """
-            print(locker_data)
+            """locker_data.set_state(False)"""
+            """ print(locker_data) """
+            """ print(f"From training: {is_training}") """
 
     @property
-    def get__client_id(self):
+    def get_client_id(self):
         return self.__client_id
 
-    @get__client_id.setter
+    @get_client_id.setter
     def set_id(self, _id):
         if isinstance(_id, int) and _id >= 0:
             self.__client_id = _id
@@ -167,6 +176,14 @@ class Client:
     @get_date_last_payment.setter
     def set_date_last_payment(self, new_date_last_payment):
         self.__date_last_payment = new_date_last_payment
+
+    @property
+    def get_locker_data(self):
+        return self.locker_data
+
+    @get_locker_data.setter
+    def set_locker_data(self, data):
+        self.locker_data = data
 
 
 """ 
