@@ -1,9 +1,9 @@
 from user_class_gym import Client
-from commons import get_current_date,format_in_currency, separator_string
-
+from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value
+import inspect
 
 class Gym:
-    def __init__(self, nit, name, adress):
+    def __init__(self, nit:int, name:str, adress:str):
         self.nit = nit
         self.name = name
         self.adress = adress
@@ -45,11 +45,11 @@ class Gym:
 
     @property
     def get_locker_list(self):
-        return self.locker_list
+        return self.__locker_list
 
     @get_locker_list.setter
     def set_locker_list(self, locker_list):
-        self.locker_list = locker_list
+        self.__locker_list = locker_list
 
     @property
     def get_membership_list(self):
@@ -59,16 +59,9 @@ class Gym:
     def set_membership_list(self, membership_list):
         self.__membership_list = membership_list
 
-    def get_empty_lockers(self, to_print = False):
-        empty_lockers = list(
-            filter(lambda locker: locker.get_is_assigned is False, self.get_locker_list)
-        )
-
-        if not empty_lockers:
-            print("No empty lockers available")
-        
-        if to_print:
-            for locker in empty_lockers:
+    def print_all_lockers(self, to_print = False):
+        if to_print :
+            for locker in self.__locker_list:
                 print(
                     f"Locker: #{locker.get_locker_id},\n"
                     f"Assigned to: {locker.get_client_id},\n"
@@ -76,15 +69,47 @@ class Gym:
                 )
                 separator_string()
         else:
+            return self.__locker_list
+
+    def get_empty_lockers(self, to_print = False):
+        empty_lockers = []
+        
+        if self.get_locker_list:
+            empty_lockers = list(
+                filter(lambda locker: locker.get_is_assigned is False, self.get_locker_list)
+            )
+        else:
+            empty_lockers = []
+
+        if not empty_lockers:
+            print("No empty lockers available")
+            separator_string()
+
+        if to_print and empty_lockers:
+            for locker in empty_lockers:
+                print(
+                    f"Locker: #{locker.get_locker_id},\n"
+                    f"Assigned to: {locker.get_client_id},\n"
+                    f"Locker price: {format_in_currency(locker.get_locker_price)}\n"
+                )
+                separator_string()
+        elif not empty_lockers:
+            return []
+        else:
             return empty_lockers
 
     def assign_lockers(self, client_id, name):
         """To assign locker"""
 
         self.get_empty_lockers()[0].set_client_id = client_id
+        print(f"Locker #{self.get_empty_lockers()[0].get_locker_id}" f" assigned to: {name}")
         separator_string()
         print()
-        print(f"Locker #{self.get_empty_lockers()[0].get_locker_id}" f" assigned to: {name}")
+        value = input("Do you want to print all lockers? (y/n): ")
+        if value.lower() == "y":
+            self.print_all_lockers(True)
+        elif value.lower() == "n":
+            pass
         print()
         return self.get_empty_lockers()[0]
 
@@ -154,10 +179,71 @@ class Gym:
 
         self.__clients_list.append(user_data)
         separator_string()
-        print()
-        print(f"Client {name} added successfully...")
-        print()
+        print(f"Client {name} has been added to the gym {self.get_name.capitalize()} successfully...")
         separator_string()
+
+    def get_client_info(self, client_id):
+        if client_id:
+            client_found = search_client(client_id, self.__clients_list)
+            if client_found:
+                client_info = {}
+                client_class_methods = inspect.getmembers(Client)
+                getters = [(name, member) for name, member in client_class_methods if name.startswith("get_")]
+                for getter_name, _ in getters:
+                    if getter_name.startswith("get_"):
+                        attr_name = getter_name[4:]  # Remove "get_" prefix to get attribute name
+                        attr_value = getattr(client_found[0], getter_name)  # Llamar al getter del cliente
+                        client_info[attr_name] = attr_value
+
+                print(f"Client info: {client_info}")
+    def update_client(self, object_class):
+        options = {}
+        selected_key = None
+        expected_type = {}
+        expected_type_selected = None
+        separator_string()
+        """ client_id = input("Write the client ID: ") """
+        client_id = 12312321
+        separator_string()
+        if client_id:
+            client_finded = search_client(client_id, self.__clients_list)
+            params = inspect.signature(object_class.__init__).parameters
+            for index, (param_name, param) in enumerate(params.items(), start=0):
+                expected_type = param.annotation if param.annotation != inspect._empty else str
+                if param_name == "self":
+                    continue
+                options[index] = param_name
+            for key, option in options.items():
+                print(f"Write '{key}' for '{option}'.")
+            
+            """ for param_name in expected_type:
+                print(f"Param: {param_name}") """
+            print()
+            value_selected = input("Write the number of your choice: ")
+            if int(value_selected) in options:
+                selected_key = options[int(value_selected)]
+
+
+            new_value = input(f"Write the new value for {selected_key}: ")
+            print()
+            print("What field do you want to change? Write the number you  want to change: ")
+
+            if client_finded:
+                """ client_instance = client_finded[0]
+
+                separator_string("Before the update:")
+                self.get_client_info(client_id) """
+
+
+                """ setter_name = f"set_{selected_key}"
+                if hasattr(client_instance, setter_name):
+                    setattr(client_instance, setter_name, convert_value(new_value, expected_type.__name__))
+                else:
+                    print(f"No setter found for {selected_key}")
+
+                separator_string("After the update:")
+                self.get_client_info(client_id) """
+
 
     """ def update_membership_date(self, client_id, membership_data, new_membership_date):
         print(client_id, membership_data.get_date_last_payment, new_membership_date)

@@ -1,5 +1,5 @@
 class Locker:
-    def __init__(self, locker_id, locker_state, color, locker_type, client_id):
+    def __init__(self, locker_id:int, locker_state:bool, color:str, locker_type:str, client_id:int):
         self.locker_id = locker_id
         self.locker_state = locker_state
         self.color = color
@@ -10,10 +10,12 @@ class Locker:
         else:
             self.client_id = None
             self.is_assigned = False
-        if locker_type == "simple":
+        if locker_type.lower() == "simple":
             self.locker_price = 5000
-        elif locker_type == "double":
+        elif locker_type.lower() == "double":
             self.locker_price = 10000
+        else:
+            self.locker_price = 2000
 
     @property
     def get_locker_id(self):

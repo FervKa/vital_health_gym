@@ -85,6 +85,7 @@ class Client:
 
     @get_last_name.setter
     def set_last_name(self, _last_name):
+        print(f"Estoy entrando: {_last_name}")
         self.__last_name = _last_name
 
     @property
@@ -184,7 +185,6 @@ class Client:
     @get_locker_data.setter
     def set_locker_data(self, data):
         self.locker_data = data
-
 
 """ 
 # Crear una lista de objetos Client

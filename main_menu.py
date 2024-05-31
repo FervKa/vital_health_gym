@@ -1,8 +1,10 @@
 from gym_class import Gym
-from commons import options_input, get_current_date,convert_value
+from commons import options_input, get_current_date, convert_value, separator_string, get_params_peer_class
 from initial_data import dummy_users, dummy_lockers, dummy_memberships, michael_gym
 from membership_class import Membership
 import inspect
+from lockers_class import Locker
+from user_class_gym import Client
 
 
 """ for membership in self.membership_list:
@@ -13,7 +15,20 @@ import inspect
             ) 
 """
 
-michael_gym.add_client(
+michael_gym.update_client(Client)
+
+""" test_gym = get_params_peer_class(Gym) """
+
+""" ENTER_DATA_INPUT = 1
+list_lockers_by_input = [] """
+
+""" for data in range(ENTER_DATA_INPUT):
+    locker = get_params_peer_class(Locker)
+    list_lockers_by_input.append(locker) """
+
+""" test_gym.set_locker_list = dummy_lockers
+test_gym.set_membership_list = dummy_memberships """
+""" test_gym.add_client(
     999999,
     "Julian",
     "Caribe",
@@ -23,26 +38,9 @@ michael_gym.add_client(
     "daily",
     True,
     get_current_date(),
-    True
-)
+    True,
+) """
 
-def get_params_peer_class(object_class):
-    params = inspect.signature(object_class).parameters
-    attr_values = {}
-    for param in params:
-        value = input(f"Enter the value for {param}: ")
-        try:
-            attr_values[param] = convert_value(value, param)
-        except ImportWarning as e:
-            print(f"Error converting {param}: {e}")
-            attr_values[param] = value
-
-    class_created = object_class(**attr_values)
-    return class_created
-
-test_gym = get_params_peer_class(Gym)
-
-print(test_gym.get_adress)
 
 """ for param in get_params_peer_class(Gym):
     print(f"Write the value for: {param.name}")
