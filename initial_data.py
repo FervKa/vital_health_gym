@@ -31,9 +31,9 @@ dummy_lockers = [
 
 # ------------ Creating the initial memberships ------------#
 dummy_memberships = [
-    Membership("Daily", True, 10000),
-    Membership("Monthly", True, 110000),
-    Membership("Three Months", True, 280000),
+    Membership("Daily", True, 10000, 1),
+    Membership("Monthly", True, 110000, 30),
+    Membership("Three Months", True, 280000, 90),
 ]
 
 # ------------ Creating the initial users ------------#
@@ -116,7 +116,7 @@ dummy_users = [
         "7777777777",
         True,
         dummy_memberships[2],
-        True,
+        False,
         get_current_date(),
         "2024-05-24",
         False,
@@ -130,9 +130,3 @@ michael_gym = Gym(3221231, "Michael Gym", "Calle 123")
 michael_gym.set_clients_list = dummy_users
 michael_gym.set_locker_list = dummy_lockers
 michael_gym.set_membership_list = dummy_memberships
-
-# -------------- Testing -----------------#
-
-michael_gym.create_membership()
-lista = michael_gym.get_membership_list
-print(lista[3])

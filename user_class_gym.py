@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from commons import validate_id, get_current_date
+from commons import validate_id, get_current_date, format_in_currency
 
 
 class Client:
@@ -9,14 +9,14 @@ class Client:
         name: str,
         last_name: str,
         age: int,
-        phone_number=int,
-        membership_active=False,
-        membership_data=None,
-        is_active=False,
-        created_at="",
-        date_last_payment=None,
-        is_training=False,
-        locker_data=None,
+        phone_number: int,
+        membership_active: bool,
+        membership_data: object,
+        is_active: bool,
+        created_at: date,
+        date_last_payment: object,
+        is_training: bool,
+        locker_data: object,
     ):
         self.__client_id = validate_id(client_id)
         self.__name = name
@@ -41,14 +41,16 @@ class Client:
         else:
             self.__date_last_payment = ""
 
+        self.__remaining_days = membership_data.get_membership_duration
+
         if locker_data is not None:
             self.__assigned_locker = locker_data.get_locker_id
-            self.locker_data = locker_data
+            self.__locker_data = locker_data
             """ print(f"Locker assigned: {self.__assigned_locker}") """
             """ self.__is_training = locker_data.get("is_training") """
         else:
             self.__assigned_locker = None
-            self.locker_data = None
+            self.__locker_data = None
             """ print(f"Assigned locker: {self.__assigned_locker}") """
 
         if is_training and (locker_data is not None):
@@ -77,7 +79,7 @@ class Client:
 
     @get_name.setter
     def set_name(self, _name):
-        self.__name = _name
+        self.__name = _name.capitalize()
 
     @property
     def get_last_name(self):
@@ -86,7 +88,7 @@ class Client:
     @get_last_name.setter
     def set_last_name(self, _last_name):
         print(f"Estoy entrando: {_last_name}")
-        self.__last_name = _last_name
+        self.__last_name = _last_name.capitalize()
 
     @property
     def get_age(self):
@@ -180,21 +182,37 @@ class Client:
 
     @property
     def get_locker_data(self):
-        return self.locker_data
+        return self.__locker_data
 
     @get_locker_data.setter
     def set_locker_data(self, data):
-        self.locker_data = data
+        self.__locker_data = data
+
+    @property
+    def get_remaining_days(self):
+        return self.__remaining_days
+
+    @get_remaining_days.setter
+    def set_remaining_days(self, days):
+        self.__remaining_days = days
 
     def __str__(self):
-        return (f"Client(client_id={self.__client_id}, name={self.__name}, last_name={self.__last_name}, "
-                f"age={self.__age}, phone_number={self.__phone_number}, membership_active={self.__membership_active}, "
-                f"membership_data={self.__membership_data}, is_active={self.__is_active}, created_at={self.__created_at}, "
-                f"date_last_payment={self.__date_last_payment}, is_training={self.__is_training}, "
-                f"assigned_locker={self.__assigned_locker})")
+        return (
+            f"ID: {self.__client_id},\n"
+            f"Name: {self.__name} {self.__last_name},\n"
+            f"Age: {self.__age},\n"
+            f"Phone number: +(57) {self.__phone_number},\n"
+            f"Membership active: {'Active' if self.__membership_active else 'Inactive'},\n"
+            f"Membership data: {self.__date_last_payment},\n"
+            f"Is active: {self.__is_active},\n Created at: {self.__created_at},\n"
+            f"Membership data: {self.__membership_data.get_membership_type},\n"
+            f"Assigned locker: {self.__assigned_locker},\n"
+            f"Locker price: {format_in_currency(self.__locker_data.get_locker_price) if self.__locker_data is not None else format_in_currency(0)}"
+        )
 
     def __repr__(self):
         return self.__str__()
+
 
 """ 
 # Crear una lista de objetos Client

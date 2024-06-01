@@ -1,5 +1,11 @@
 from gym_class import Gym
-from commons import options_input, get_current_date, convert_value, separator_string, get_params_peer_class
+from commons import (
+    options_input,
+    get_current_date,
+    convert_value,
+    separator_string,
+    get_params_peer_class,
+)
 from initial_data import dummy_users, dummy_lockers, dummy_memberships, michael_gym
 from membership_class import Membership
 import inspect
@@ -15,7 +21,10 @@ from user_class_gym import Client
             ) 
 """
 
-michael_gym.update_client(Client)
+""" michael_gym.update_client(Client) """
+""" michael_gym.delete_client(5151213)
+michael_gym.handle_client_status(6634234) """
+michael_gym.remaining_days_for_membership(3291121)
 
 """ test_gym = get_params_peer_class(Gym) """
 
