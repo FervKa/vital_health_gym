@@ -1,19 +1,13 @@
 class Membership:
-    def __init__(self, membership_type="daily", membership_active=False):
+    def __init__(self, membership_type="daily", membership_active=False, cost = float):
         self.__membership_type = membership_type
-        if membership_type.lower() == "daily":
-            self.__membership_cost = 10000
-        elif membership_type.lower() == "monthly":
-            self.__membership_cost = 80000
-        elif membership_type.lower() == "three months":
-            self.__membership_cost = 200000
-
         """ self.__date_last_payment = "2024-05-25" """
         """ if date_last_payment:
             self.__date_last_payment = date_last_payment
         else:
             self.__date_last_payment = "2024-05-25" """
         self.__membership_active = membership_active or False
+        self.__cost = cost
         """ if membership_active:
             self.__membership_active = True
         else:
@@ -43,6 +37,13 @@ class Membership:
     def set_membership_cost(self, membership_cost):
         self.__membership_cost = membership_cost
 
+    @property
+    def get_cost(self):
+        return self.__cost
+    
+    @get_cost.setter
+    def set_cost(self, cost):
+        self.__cost = cost
 
 """ 
 
