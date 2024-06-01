@@ -1,5 +1,5 @@
 from user_class_gym import Client
-from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value, get_params_peer_class
+from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value, get_params_peer_class, validate_id
 from membership_class import Membership
 import inspect
 
@@ -256,8 +256,10 @@ class Gym:
 
 
     def assign_client_membership(self, client_id:int, membership:Membership):
+       validate_id(client_id)
        client =  self.get_client(client_id)
        client.set_membership_data(self, membership)
+       
 
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
