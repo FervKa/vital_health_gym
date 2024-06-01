@@ -1,6 +1,8 @@
 class Membership:
-    def __init__(self, membership_type="daily", membership_active=False, cost = float):
+    def __init__(self, membership_type="daily", membership_active=False, cost = int):
         self.__membership_type = membership_type
+        
+
         """ self.__date_last_payment = "2024-05-25" """
         """ if date_last_payment:
             self.__date_last_payment = date_last_payment

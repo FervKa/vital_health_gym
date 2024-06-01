@@ -130,3 +130,5 @@ michael_gym = Gym(3221231, "Michael Gym", "Calle 123")
 michael_gym.set_clients_list = dummy_users
 michael_gym.set_locker_list = dummy_lockers
 michael_gym.set_membership_list = dummy_memberships
+
+# -------------- Testing -----------------#
