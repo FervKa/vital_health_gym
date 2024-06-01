@@ -1,5 +1,5 @@
 class Membership:
-    def __init__(self, membership_type="daily", membership_active=False, membership_cost = int):
+    def __init__(self, membership_type:str, membership_active:bool, membership_cost:int):
         self.__membership_type = membership_type
         
 
@@ -39,12 +39,12 @@ class Membership:
     def set_membership_cost(self, membership_cost):
         self.__membership_cost = membership_cost
 
-    def __str__(self):
-        return (f"Membership(membership_type={self.__membership_type}, "
-                f"membership_active={self.__membership_active}, cost={self.__membership_cost}")
+    # def __str__(self):
+    #     return (f"Membership(membership_type={self.__membership_type}, "
+    #             f"membership_active={self.__membership_active}, cost={self.__membership_cost}")
     
-    def __repr__(self):
-        return self.__str__()
+    # def __repr__(self):
+    #     return self.__str__()
 
 """ 
 

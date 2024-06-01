@@ -15,7 +15,16 @@ from user_class_gym import Client
             ) 
 """
 
-michael_gym.update_client(Client)
+#michael_gym.update_client(Client)
+
+# -------------- Testing -----------------#
+michael_gym.set_clients_list = dummy_users
+michael_gym.set_locker_list = dummy_lockers
+michael_gym.set_membership_list = dummy_memberships
+michael_gym.create_membership()
+lista = michael_gym.get_membership_list
+print(lista[2])
+michael_gym.print_membership_list()
 
 """ test_gym = get_params_peer_class(Gym) """
 
