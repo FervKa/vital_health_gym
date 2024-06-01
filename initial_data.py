@@ -31,9 +31,9 @@ dummy_lockers = [
 
 # ------------ Creating the initial memberships ------------#
 dummy_memberships = [
-    Membership("Daily", True),
-    Membership("Monthly", True),
-    Membership("Three Months", True),
+    Membership("Daily", True, 10000),
+    Membership("Monthly", True, 110000),
+    Membership("Three Months", True, 280000),
 ]
 
 # ------------ Creating the initial users ------------#
