@@ -270,16 +270,34 @@ class Gym:
             separator_string()
 
     def create_membership(self):
-        membership = get_params_peer_class(Membership)
-        if membership.get_membership_type:
-            self.__membership_list.append(membership)
-            separator_string()
-            print(f"Membership {membership.get_membership_type} has been added...")
-        else:
-            separator_string()
-            print("Membership not added. Please, try again...")
+        try:
+            membership = get_params_peer_class(Membership)
 
-    def assign_client_membership(self, client_id, membership):
+            # Validate that the membership has been created correctly
+            if not membership:
+                print("Error: Unable to obtain the parameters for the membership.")
+                return
+
+            # Check essential properties of the membership
+            required_properties = [
+                "get_membership_type",
+                "get_membership_active",
+                "get_membership_cost",
+            ]
+            for prop in required_properties:
+                if not hasattr(membership, prop):
+                    print(f"Error: The property {prop} is missing in the membership.")
+                    return
+
+            self.__membership_list.append(membership)
+
+            print(
+                f"Membership successfully created with type: {membership.get_membership_type}."
+            )  # Assuming 'membership' has a 'get_membership_type' property
+        except AttributeError as ae:
+            print(f"Attribute error: {str(ae)}")
+
+    def assign_client_membership(self, client_id: int, membership: Membership):
         client = self.get_client(client_id)
         client.set_membership_data(self, membership)
 
@@ -356,6 +374,14 @@ class Gym:
             print(f"Client {client_id} not found...")
             separator_string()
 
+    def print_membership_list(self):
+        for i, membership in enumerate(self.__membership_list):
+            separator_string(i)
+            print(
+                f"Membership {i+1}: Type: {membership.get_membership_type()}, Active: {membership.get_membership_active()}"
+            )
+            print(f"Cost: {membership.get_membership_cost()}")
+
     def __str__(self):
         return (
             f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
@@ -364,6 +390,20 @@ class Gym:
 
     def __repr__(self):
         return self.__str__()
+
+    #         """ client_instance = client_finded[0]
+
+    #             separator_string("Before the update:")
+    #             self.get_client_info(client_id) """
+
+    #             """ setter_name = f"set_{selected_key}"
+    #             if hasattr(client_instance, setter_name):
+    #                 setattr(client_instance, setter_name, convert_value(new_value, expected_type.__name__))
+    #             else:
+    #                 print(f"No setter found for {selected_key}")
+
+    #             separator_string("After the update:")
+    #             self.get_client_info(client_id) """
 
     # """ def update_membership_date(self, client_id, membership_data, new_membership_date):
     #     print(client_id, membership_data.get_date_last_payment, new_membership_date)
