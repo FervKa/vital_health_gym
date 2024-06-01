@@ -262,8 +262,8 @@ class Gym:
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
             separator_string(i)
-            print(f"Membership {i+1}: Type: {membership.get_membership_type()}, Active: {membership.get_membership_active()}")
-            print(f"Cost: {membership.get_membership_cost()}")
+            print(f"Membership {i+1}: Type: {membership.get_membership_type}, Active: {membership.get_membership_active}")
+            print(f"Cost: {membership.get_membership_cost}")
 
     def __str__(self):
         return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
