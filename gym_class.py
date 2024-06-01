@@ -1,5 +1,6 @@
 from user_class_gym import Client
-from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value
+from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value, get_params_peer_class
+from membership_class import Membership
 import inspect
 
 class Gym:
@@ -228,30 +229,46 @@ class Gym:
             print()
             print("What field do you want to change? Write the number you  want to change: ")
 
-            if client_finded:
-                """ client_instance = client_finded[0]
+            #if client_finded:
 
-                separator_string("Before the update:")
-                self.get_client_info(client_id) """
+    def create_membership(self):
+        membership = get_params_peer_class(Membership)
+        self.__membership_list.append(membership)
+
+    def assign_client_membership(self, client_id, membership):
+       client =  self.get_client(client_id)
+       client.set_membership_data(self, membership)
+
+    def __str__(self):
+        return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
+                f"clients={self.__clients_list}, lockers={self.__locker_list}, memberships={self.__membership_list})")
+    
+    def __repr__(self):
+        return self.__str__()
+      
+    #         """ client_instance = client_finded[0]
+
+    #             separator_string("Before the update:")
+    #             self.get_client_info(client_id) """
 
 
-                """ setter_name = f"set_{selected_key}"
-                if hasattr(client_instance, setter_name):
-                    setattr(client_instance, setter_name, convert_value(new_value, expected_type.__name__))
-                else:
-                    print(f"No setter found for {selected_key}")
+    #             """ setter_name = f"set_{selected_key}"
+    #             if hasattr(client_instance, setter_name):
+    #                 setattr(client_instance, setter_name, convert_value(new_value, expected_type.__name__))
+    #             else:
+    #                 print(f"No setter found for {selected_key}")
 
-                separator_string("After the update:")
-                self.get_client_info(client_id) """
+    #             separator_string("After the update:")
+    #             self.get_client_info(client_id) """
 
 
-    """ def update_membership_date(self, client_id, membership_data, new_membership_date):
-        print(client_id, membership_data.get_date_last_payment, new_membership_date)
-        for client in self.clients_list:
-            if client.get_id == client_id:
-                membership_data.set_date_last_payment = new_membership_date
-                print(client.get_name, membership_data.get_date_last_payment)
-                return print(
-                    f"Membership updated successfully for client: {client.get_name},"
-                    f" with ID: {client.get_id}"
-                ) """
+    # """ def update_membership_date(self, client_id, membership_data, new_membership_date):
+    #     print(client_id, membership_data.get_date_last_payment, new_membership_date)
+    #     for client in self.clients_list:
+    #         if client.get_id == client_id:
+    #             membership_data.set_date_last_payment = new_membership_date
+    #             print(client.get_name, membership_data.get_date_last_payment)
+    #             return print(
+    #                 f"Membership updated successfully for client: {client.get_name},"
+    #                 f" with ID: {client.get_id}"
+    #             ) """

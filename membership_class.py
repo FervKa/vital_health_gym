@@ -1,5 +1,5 @@
 class Membership:
-    def __init__(self, membership_type="daily", membership_active=False, cost = int):
+    def __init__(self, membership_type="daily", membership_active=False, membership_cost = int):
         self.__membership_type = membership_type
         
 
@@ -9,7 +9,7 @@ class Membership:
         else:
             self.__date_last_payment = "2024-05-25" """
         self.__membership_active = membership_active or False
-        self.__cost = cost
+        self.__membership_cost = membership_cost
         """ if membership_active:
             self.__membership_active = True
         else:
@@ -39,13 +39,12 @@ class Membership:
     def set_membership_cost(self, membership_cost):
         self.__membership_cost = membership_cost
 
-    @property
-    def get_cost(self):
-        return self.__cost
+    def __str__(self):
+        return (f"Membership(membership_type={self.__membership_type}, "
+                f"membership_active={self.__membership_active}, cost={self.__membership_cost}")
     
-    @get_cost.setter
-    def set_cost(self, cost):
-        self.__cost = cost
+    def __repr__(self):
+        return self.__str__()
 
 """ 
 

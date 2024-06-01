@@ -186,6 +186,16 @@ class Client:
     def set_locker_data(self, data):
         self.locker_data = data
 
+    def __str__(self):
+        return (f"Client(client_id={self.__client_id}, name={self.__name}, last_name={self.__last_name}, "
+                f"age={self.__age}, phone_number={self.__phone_number}, membership_active={self.__membership_active}, "
+                f"membership_data={self.__membership_data}, is_active={self.__is_active}, created_at={self.__created_at}, "
+                f"date_last_payment={self.__date_last_payment}, is_training={self.__is_training}, "
+                f"assigned_locker={self.__assigned_locker})")
+
+    def __repr__(self):
+        return self.__str__()
+
 """ 
 # Crear una lista de objetos Client
 clients = [

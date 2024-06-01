@@ -132,3 +132,7 @@ michael_gym.set_locker_list = dummy_lockers
 michael_gym.set_membership_list = dummy_memberships
 
 # -------------- Testing -----------------#
+
+michael_gym.create_membership()
+lista = michael_gym.get_membership_list
+print(lista[3])
