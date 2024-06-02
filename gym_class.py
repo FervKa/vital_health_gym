@@ -298,8 +298,11 @@ class Gym:
             print(f"Attribute error: {str(ae)}")
 
     def assign_client_membership(self, client_id: int, membership: Membership):
+        validate_id(client_id)
         client = self.get_client(client_id)
-        client.set_membership_data(self, membership)
+        validate_object_class(membership, Membership)
+        client.set_membership_data = membership
+        print(f"Membership assigned to client {client_id} successfully.")
 
     def handle_change_client_training(self, client_id):
         client_found = self.get_client(client_id)

@@ -92,3 +92,15 @@ def get_params_peer_class(object_class):
 
     class_created = object_class(**attr_values)
     return class_created
+
+
+def validate_object_class(object, _class):
+    if not isinstance(object, _class):
+        raise TypeError("{object} must be an instance of the {_class} class.")
+
+
+# validar que los atributos ingresados si los tenga la clase
+def validate_atributes_class(object, properties_list):
+    for prop in properties_list:
+        if not hasattr(object, prop):
+            raise AttributeError("{object} object does not support ")
