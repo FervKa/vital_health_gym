@@ -1,5 +1,6 @@
 from datetime import datetime, date
 from commons import validate_id, get_current_date
+from membership_class import Membership
 
 
 class Client:
@@ -124,7 +125,7 @@ class Client:
 
     @get_membership_data.setter
     def set_membership_data(self, _membership_data):
-        if isinstance(_membership_data, dict):
+        if isinstance(_membership_data, Membership):
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")

@@ -1,5 +1,5 @@
 from user_class_gym import Client
-from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value, get_params_peer_class, validate_id
+from commons import get_current_date,format_in_currency, separator_string, search_client, convert_value, get_params_peer_class, validate_id, validate_atributes_class, validate_object_class
 from membership_class import Membership
 import inspect
 
@@ -243,23 +243,19 @@ class Gym:
             
             # Check essential properties of the membership
             required_properties = ['get_membership_type', 'get_membership_active', 'get_membership_cost']
-            for prop in required_properties:
-                if not hasattr(membership, prop):
-                    print(f"Error: The property {prop} is missing in the membership.")
-                    return
-            
+            validate_atributes_class(membership, required_properties)   
             self.__membership_list.append(membership)    
             
             print(f"Membership successfully created with type: {membership.get_membership_type}.")  # Assuming 'membership' has a 'get_membership_type' property
         except AttributeError as ae:
             print(f"Attribute error: {str(ae)}")
 
-
-    def assign_client_membership(self, client_id:int, membership:Membership):
-       validate_id(client_id)
-       client =  self.get_client(client_id)
-       client.set_membership_data(self, membership)
-       
+    def assign_client_membership(self, client_id:int, membership: Membership):
+        validate_id(client_id)
+        client =  self.get_client(client_id)
+        validate_object_class(membership, Membership)
+        client.set_membership_data = membership
+        print(f"Membership assigned to client {client_id} successfully.")
 
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
@@ -267,12 +263,12 @@ class Gym:
             print(f"Membership {i+1}: Type: {membership.get_membership_type}, Active: {membership.get_membership_active}")
             print(f"Cost: {membership.get_membership_cost}")
 
-    def __str__(self):
-        return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
-                f"clients={self.__clients_list}, lockers={self.__locker_list}, memberships={self.__membership_list})")
+    # def __str__(self):
+    #     return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
+    #             f"clients={self.__clients_list}, lockers={self.__locker_list}, memberships={self.__membership_list})")
     
-    def __repr__(self):
-        return self.__str__()
+    # def __repr__(self):
+    #     return self.__str__()
       
     
     #         """ client_instance = client_finded[0]
