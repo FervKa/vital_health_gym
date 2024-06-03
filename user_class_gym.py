@@ -126,7 +126,7 @@ class Client:
 
     @get_membership_data.setter
     def set_membership_data(self, _membership_data):
-        if isinstance(_membership_data, _membership_data):
+        if isinstance(_membership_data, Membership) or _membership_data is None:
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")
@@ -212,6 +212,15 @@ class Client:
 
     def __repr__(self):
         return self.__str__()
+
+    def delete_membership_data(self):
+        # Creamos una nueva membresía dummy
+        dummy_membership = Membership(
+            membership_type="None", membership_active=False, membership_cost=0
+        )
+        # Asignamos la nueva membresía al cliente
+        self.set_membership_data = dummy_membership
+        print("Membership data deleted. New None membership assigned.")
 
 
 """ 
