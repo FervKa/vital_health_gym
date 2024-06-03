@@ -8,6 +8,7 @@ from commons import (
     get_params_peer_class,
     validate_id,
     create_a_file,
+    validate_object_class,
 )
 from membership_class import Membership
 import inspect
@@ -299,7 +300,7 @@ class Gym:
         except AttributeError as ae:
             print(f"Attribute error: {str(ae)}")
 
-    def assign_client_membership(self, client_id, membership: Membership):
+    def assign_client_membership(self, client_id, membership):
         validate_id(client_id)
         client = self.get_client(client_id)
         validate_object_class(membership, Membership)
