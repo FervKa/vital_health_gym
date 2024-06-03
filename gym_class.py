@@ -325,5 +325,3 @@ class Gym:
     #                 f"Membership updated successfully for client: {client.get_name},"
     #                 f" with ID: {client.get_id}"
     #             ) """
-
-michael_gym = Gym(3221231, "Michael Gym", "Calle 123")
