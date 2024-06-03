@@ -126,7 +126,7 @@ class Client:
 
     @get_membership_data.setter
     def set_membership_data(self, _membership_data):
-        if isinstance(_membership_data, Membership):
+        if isinstance(_membership_data, _membership_data):
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")

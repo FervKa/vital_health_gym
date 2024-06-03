@@ -1,5 +1,8 @@
-from datetime import datetime
+from datetime import datetime, date
 import inspect
+import os
+from openpyxl import Workbook
+import stat
 
 
 def get_current_date():
@@ -104,3 +107,53 @@ def validate_atributes_class(object, properties_list):
     for prop in properties_list:
         if not hasattr(object, prop):
             raise AttributeError("{object} object does not support ")
+
+
+def validate_a_directory(directory, subdirectory):
+    try:
+        if not os.path.isdir(directory):
+            os.makedirs(directory, exist_ok=True)
+            os.makedirs(subdirectory, exist_ok=True)
+            return True
+        elif not os.path.isdir(subdirectory):
+            os.makedirs(subdirectory, exist_ok=True)
+            return True
+        else:
+            separator_string()
+            print("The directory and subdirectory already exists.")
+            return False
+    except Exception as e:
+        print(f"Error creating the directory: {e}")
+        return False
+
+
+def create_a_file(file_name, headers, data):
+    try:
+        wb = Workbook()
+        ws = wb.active
+        ws.append(headers)
+        for row in data:
+            ws.append(row)
+
+        report_type = file_name.split(".")[0]
+        current_directory = os.getcwd()
+        subdirectory = os.path.join("reports")
+        directory_to_save = os.path.join(current_directory, subdirectory)
+        reports_dir = os.path.join(directory_to_save, report_type)
+        date_to_file = datetime.now().strftime("%Y%m%d%H%M%S")
+        file_name_with_date = file_name.split(".")[0] + f"_{date_to_file}.xlsx"
+        file_path = os.path.join(reports_dir, file_name_with_date)
+        if validate_a_directory(directory_to_save, reports_dir):
+            separator_string("Creating the directory...")
+            print(f"The directory '{subdirectory}' and '{report_type}' was created.")
+
+        else:
+            separator_string(f"{subdirectory} already exists.")
+            print()
+
+        separator_string("Creating the file...")
+        wb.save(file_path)
+        print(f"The file '{file_name_with_date}' was created.")
+        separator_string()
+    except Exception as e:
+        print(f"Error creating the file: {e}")

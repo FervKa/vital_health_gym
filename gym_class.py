@@ -6,6 +6,8 @@ from commons import (
     search_client,
     convert_value,
     get_params_peer_class,
+    validate_id,
+    create_a_file,
 )
 from membership_class import Membership
 import inspect
@@ -297,7 +299,7 @@ class Gym:
         except AttributeError as ae:
             print(f"Attribute error: {str(ae)}")
 
-    def assign_client_membership(self, client_id: int, membership: Membership):
+    def assign_client_membership(self, client_id, membership: Membership):
         validate_id(client_id)
         client = self.get_client(client_id)
         validate_object_class(membership, Membership)
@@ -364,14 +366,33 @@ class Gym:
     def remaining_days_for_membership(self, client_id):
         client_found = self.get_client(client_id)
         if client_found:
-            print(client_found.get_date_last_payment)
-            print(date.fromisoformat(client_found.get_date_last_payment))
-            rest_days = timedelta(
-                days=client_found.get_membership_data.get_membership_duration
+            formated_last_payment = date.fromisoformat(
+                client_found.get_date_last_payment
             )
-            print(date.fromisoformat(client_found.get_date_last_payment) - rest_days)
-            print(client_found.get_membership_data.get_membership_duration)
-
+            duration_membership = (
+                client_found.get_membership_data.get_membership_duration
+            )
+            duration_membership_days = timedelta(days=duration_membership)
+            if formated_last_payment >= date.today():
+                separator_string()
+                print(f"The user has paid the membership, but, is not active...")
+                separator_string()
+            elif (
+                formated_last_payment
+                + duration_membership_days
+                - date.fromisoformat(get_current_date())
+            ).days <= 0:
+                separator_string()
+                print(f"Membership for client {client_id} has expired...")
+                separator_string()
+            else:
+                separator_string("Remaining days for the membership")
+                print(
+                    f"Client {client_found.get_name} has {(formated_last_payment
+                + duration_membership_days
+                - date.fromisoformat(get_current_date())).days} days left until the membership ends..."
+                )
+                separator_string()
         else:
             separator_string()
             print(f"Client {client_id} not found...")
@@ -385,6 +406,27 @@ class Gym:
             )
             print(f"Cost: {membership.get_membership_cost()}")
 
+    def generate_report_current_clients(self):
+        data_to_save = []
+        headers = []
+        params = inspect.signature(Client.__init__).parameters
+        for param_name, param in params.items():
+            if (
+                param_name == "self"
+                or param_name == "locker_data"
+                or param_name == "membership_data"
+            ):
+                continue
+
+            headers.append(param_name.upper())
+        for user in self.__clients_list:
+            aux = []
+            for header in headers:
+                aux.append(getattr(user, f"get_{header.lower()}"))
+
+            data_to_save.append(aux)
+        create_a_file("current_clients.xlsx", headers, data_to_save)
+
     def __str__(self):
         return (
             f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
@@ -393,28 +435,3 @@ class Gym:
 
     def __repr__(self):
         return self.__str__()
-
-    #         """ client_instance = client_finded[0]
-
-    #             separator_string("Before the update:")
-    #             self.get_client_info(client_id) """
-
-    #             """ setter_name = f"set_{selected_key}"
-    #             if hasattr(client_instance, setter_name):
-    #                 setattr(client_instance, setter_name, convert_value(new_value, expected_type.__name__))
-    #             else:
-    #                 print(f"No setter found for {selected_key}")
-
-    #             separator_string("After the update:")
-    #             self.get_client_info(client_id) """
-
-    # """ def update_membership_date(self, client_id, membership_data, new_membership_date):
-    #     print(client_id, membership_data.get_date_last_payment, new_membership_date)
-    #     for client in self.clients_list:
-    #         if client.get_id == client_id:
-    #             membership_data.set_date_last_payment = new_membership_date
-    #             print(client.get_name, membership_data.get_date_last_payment)
-    #             return print(
-    #                 f"Membership updated successfully for client: {client.get_name},"
-    #                 f" with ID: {client.get_id}"
-    #             ) """
