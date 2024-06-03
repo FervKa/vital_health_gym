@@ -119,8 +119,8 @@ class Gym:
             for client in self.__clients_list:
                 if client.get_client_id == client_id:
                     return client
-                else:
-                    return print("Client not found, please check the ID and try again.")
+            print("Client not found, please check the ID and try again.")
+            return None
         else:
             for index, client in enumerate(self.__clients_list):
                 separator_string(index)
@@ -129,7 +129,7 @@ class Gym:
                     f"ID: {client.get_client_id},\n"
                     f"Name: {client.get_name} {client.get_last_name},\n"
                     f"Age: {client.get_age},\nPhone number: +(57) {client.get_phone_number},\n"
-                    f"Membership active: {"Active" if client.get_membership_active else "Inactive"},\n"
+                    f"Membership active: {'Active' if client.get_membership_active else 'Inactive'},\n"
                     f"Membership data: {client.get_date_last_payment},\n"
                     f"Is active: {client.get_is_active}, Created at: {client.get_created_at},\n"
                     f"Membership data: {client.get_membership_data.get_membership_type},\n"
@@ -255,6 +255,7 @@ class Gym:
         client =  self.get_client(client_id)
         validate_object_class(membership, Membership)
         client.set_membership_data = membership
+        #se necesita actualizar el tiempo de mebresia en esta funcion
         print(f"Membership assigned to client {client_id} successfully.")
 
     def print_membership_list(self):
@@ -262,6 +263,21 @@ class Gym:
             separator_string(i)
             print(f"Membership {i+1}: Type: {membership.get_membership_type}, Active: {membership.get_membership_active}")
             print(f"Cost: {membership.get_membership_cost}")
+
+    def update_client_membership(self, client_id, new_membership_data):
+        validate_id(client_id)
+        client =  self.get_client(client_id)
+        validate_object_class(new_membership_data, Membership)
+        client.set_membership_data = new_membership_data
+        print(f"Membership assigned to client {client_id} successfully.")
+        #Se necestia actualizar el tiemp ode membresia en esta funcion
+    
+    def delete_client_membership(self, client_id):
+        validate_id(client_id)
+        client =  self.get_client(client_id)
+        client.set_membership_data = None
+        print(f"Membership data for client {client_id} has been deleted.")
+ 
 
     # def __str__(self):
     #     return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "

@@ -12,7 +12,7 @@ class Client:
         age: int,
         phone_number=int,
         membership_active=False,
-        membership_data=None,
+        membership_data= None,
         is_active=False,
         created_at="",
         date_last_payment=None,
@@ -125,7 +125,7 @@ class Client:
 
     @get_membership_data.setter
     def set_membership_data(self, _membership_data):
-        if isinstance(_membership_data, Membership):
+        if isinstance(_membership_data, Membership) or _membership_data is None:
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")
