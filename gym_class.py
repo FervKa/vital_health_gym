@@ -272,12 +272,24 @@ class Gym:
         print(f"Membership assigned to client {client_id} successfully.")
         #Se necestia actualizar el tiemp ode membresia en esta funcion
     
+    # def delete_client_membership(self, client_id):
+    #     validate_id(client_id)
+    #     client =  self.get_client(client_id)
+    #     del client.set_membership_data = None
+        
+    #     print(f"Membership data for client {client_id} has been deleted.")
     def delete_client_membership(self, client_id):
-        validate_id(client_id)
-        client =  self.get_client(client_id)
-        client.set_membership_data = None
-        print(f"Membership data for client {client_id} has been deleted.")
- 
+        client = self.get_client(client_id)
+        if client is not None:
+            client.delete_membership_data()
+            print(f"Membership data for client {client_id} has been deleted.")
+
+         
+
+
+
+
+
 
     # def __str__(self):
     #     return (f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
@@ -313,3 +325,5 @@ class Gym:
     #                 f"Membership updated successfully for client: {client.get_name},"
     #                 f" with ID: {client.get_id}"
     #             ) """
+
+michael_gym = Gym(3221231, "Michael Gym", "Calle 123")

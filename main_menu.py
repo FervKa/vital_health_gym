@@ -27,8 +27,12 @@ michael_gym.print_membership_list()
 client = michael_gym.get_client(6634234)
 print(client.get_name)
 
-# michael_gym.assign_client_membership(3123223,dummy_memberships[2])
-# michael_gym.delete_client_membership(3123223)
+michael_gym.assign_client_membership(3123223,dummy_memberships[2])
+
+michael_gym.delete_client_membership(2)
+# print(client1.get_membership_data)
+# michael_gym.get_client_info
+
 
 
 """ test_gym = get_params_peer_class(Gym) """
