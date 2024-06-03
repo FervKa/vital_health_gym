@@ -24,7 +24,9 @@ from user_class_gym import Client
 """ michael_gym.update_client(Client) """
 """ michael_gym.delete_client(5151213)
 michael_gym.handle_client_status(6634234) """
-michael_gym.generate_report_current_clients()
+# michael_gym.generate_report_current_clients()
+memb = dummy_memberships[2]
+michael_gym.assign_client_membership(5151213, memb)
 
 """ test_gym = get_params_peer_class(Gym) """
 
