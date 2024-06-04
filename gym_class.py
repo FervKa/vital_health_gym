@@ -477,3 +477,16 @@ class Gym:
         elif value.lower() == "n":
             pass
         print()
+
+    def delete_client_assigned_locker(self, client_id):
+        """Delete the assigned locker for a client."""
+        client = self.get_client(client_id)
+        if client:
+            if client.get_assigned_locker:
+                old_locker = client.get_assigned_locker
+                client.set_assigned_locker = None
+                print(f"Assigned locker {old_locker} for client {client_id} has been deleted.")
+            else:
+                print(f"No assigned locker found for client {client_id}.")
+        else:
+            print(f"Client {client_id} not found.")

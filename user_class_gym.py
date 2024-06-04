@@ -149,7 +149,7 @@ class Client:
 
     @get_assigned_locker.setter
     def set_assigned_locker(self, _get_assigned_locker):
-        if isinstance(_get_assigned_locker, int):
+        if isinstance(_get_assigned_locker, int) or _get_assigned_locker is None:
             self.__assigned_locker = _get_assigned_locker
         else:
             raise ValueError("Invalid locker number")
