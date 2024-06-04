@@ -27,6 +27,9 @@ michael_gym.handle_client_status(6634234) """
 # michael_gym.generate_report_current_clients()
 memb = dummy_memberships[2]
 michael_gym.assign_client_membership(5151213, memb)
+michael_gym.update_client_membership(5151213, "Weekend")
+client1 = michael_gym.get_client(5151213)
+michael_gym.update_assigned_client_locker(5151213)
 
 """ test_gym = get_params_peer_class(Gym) """
 

@@ -348,7 +348,9 @@ class Gym:
     def update_client_membership(self, client_id, membership_type):
         client_found = self.get_client(client_id)
         if client_found:
+            membership_found = False
             for membership in self.__membership_list:
+                print(f"Checking membership type: {membership.get_membership_type}")
                 if membership.get_membership_type == membership_type:
                     client_found.set_membership_data = membership
                     separator_string()
@@ -359,6 +361,11 @@ class Gym:
                         f"New membership: {client_found.get_membership_data.get_membership_type}"
                     )
                     separator_string()
+                    membership_found = True
+                    break
+            
+            if not membership_found:
+                print("Membership type not found in the list.")
         else:
             separator_string()
             print(f"Client {client_id} not found...")
@@ -402,9 +409,8 @@ class Gym:
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
             separator_string(i)
-            print(
-                f"Membership {i+1}: Type: {membership.get_membership_type()}, Active: {membership.get_membership_active()}"
-            )
+            print(f"Membership {i+1}: Type: {membership.get_membership_type()}")
+            print(f"Active: {membership.get_membership_active()}")
             print(f"Cost: {membership.get_membership_cost()}")
 
     def generate_report_current_clients(self):
@@ -436,3 +442,38 @@ class Gym:
 
     def __repr__(self):
         return self.__str__()
+    
+    def update_assigned_client_locker(self, client_id, locker_id=None):
+        """Assign a locker to a client. If locker_id is provided, it will assign that locker if available. Otherwise, it assigns the first available locker."""
+
+        empty_lockers = self.get_empty_lockers()
+
+        if locker_id is not None:
+            # Buscar el locker por ID
+            locker_to_assign = next((locker for locker in empty_lockers if locker.get_locker_id == locker_id), None)
+            if locker_to_assign is not None:
+                locker_to_assign.set_client_id = client_id
+                print(f"Locker #{locker_to_assign.get_locker_id} assigned to client ID: {client_id}")
+            else:
+                print(f"Locker #{locker_id} is not available. Assigning the first available locker.")
+                # Asignar el primer locker disponible
+                if empty_lockers:
+                    empty_lockers[0].set_client_id = client_id
+                    print(f"Locker #{empty_lockers[0].get_locker_id} assigned to client ID: {client_id}")
+                else:
+                    print("No empty lockers available.")
+        else: # Asignar el primer locker disponible cuando no le paso ningun locker_id
+            
+            if empty_lockers:
+                empty_lockers[0].set_client_id = client_id
+                print(f"Locker #{empty_lockers[0].get_locker_id} assigned to client ID: {client_id}")
+            else:
+                print("No empty lockers available.")
+
+        separator_string()
+        value = input("Do you want to print all lockers? (y/n): ")
+        if value.lower() == "y":
+            self.print_all_lockers(True)
+        elif value.lower() == "n":
+            pass
+        print()
