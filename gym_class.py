@@ -9,6 +9,7 @@ from commons import (
     validate_id,
     create_a_file,
     validate_object_class,
+    get_headers,
 )
 from membership_class import Membership
 import inspect
@@ -23,6 +24,7 @@ class Gym:
         self.__clients_list = []
         self.__locker_list = []
         self.__membership_list = []
+        self.__earnings = []
 
     @property
     def get_nit(self):
@@ -71,6 +73,14 @@ class Gym:
     @get_membership_list.setter
     def set_membership_list(self, membership_list):
         self.__membership_list = membership_list
+
+    @property
+    def get_earnings(self):
+        return self.__earnings
+
+    @get_earnings.setter
+    def set_earnings(self, earnings):
+        self.__earnings = earnings
 
     def print_all_lockers(self, to_print=False):
         if to_print:
@@ -409,17 +419,7 @@ class Gym:
 
     def generate_report_current_clients(self):
         data_to_save = []
-        headers = []
-        params = inspect.signature(Client.__init__).parameters
-        for param_name, param in params.items():
-            if (
-                param_name == "self"
-                or param_name == "locker_data"
-                or param_name == "membership_data"
-            ):
-                continue
-
-            headers.append(param_name.upper())
+        headers = get_headers(Client)
         for user in self.__clients_list:
             aux = []
             for header in headers:
@@ -428,11 +428,41 @@ class Gym:
             data_to_save.append(aux)
         create_a_file("current_clients.xlsx", headers, data_to_save)
 
-    def __str__(self):
-        return (
-            f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
-            f"clients={self.__clients_list}, lockers={self.__locker_list}, memberships={self.__membership_list})"
-        )
+    def generate_report_day(self, date_to_search):
+        attended_clients_today = []
+        headers = get_headers(Client)
+        for user in self.__clients_list:
+            if user.get_created_at == date_to_search:
+                aux = []
+                for header in headers:
+                    aux.append(getattr(user, f"get_{header.lower()}"))
+                attended_clients_today.append(aux)
+        create_a_file("attended_clients_today.xlsx", headers, attended_clients_today)
 
-    def __repr__(self):
-        return self.__str__()
+    def calculate_earning_peer_day(self, date_to_search):
+        regards = 0
+        users_list = []
+        headers = []
+        params = inspect.signature(Client.__init__).parameters
+        for param_name, param in params.items():
+            if param_name == "self" or param_name == "locker_data":
+                continue
+            if param_name == "membership_data":
+                headers.append("membership_cost")
+
+            headers.append(param_name.upper())
+
+        for user in self.__clients_list:
+            if user.get_created_at == date_to_search:
+                aux = []
+                regards = +user.get_membership_data.get_membership_cost
+                for header in headers:
+                    if header.lower() != "membership_cost":
+                        aux.append(getattr(user, f"get_{header.lower()}"))
+                        if header == "membership_data":
+                            regards.append(user.get_membership_data.get_membership_cost)
+                users_list.append(aux)
+
+        print(regards)
+        print(users_list)
+        """ create_a_file("earning_peer_day.xlsx", headers, regards) """

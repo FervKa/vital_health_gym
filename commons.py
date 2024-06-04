@@ -141,7 +141,7 @@ def create_a_file(file_name, headers, data):
         directory_to_save = os.path.join(current_directory, subdirectory)
         reports_dir = os.path.join(directory_to_save, report_type)
         date_to_file = datetime.now().strftime("%Y%m%d%H%M%S")
-        file_name_with_date = file_name.split(".")[0] + f"_{date_to_file}.xlsx"
+        file_name_with_date = report_type + f"_{date_to_file}.xlsx"
         file_path = os.path.join(reports_dir, file_name_with_date)
         if validate_a_directory(directory_to_save, reports_dir):
             separator_string("Creating the directory...")
@@ -157,3 +157,18 @@ def create_a_file(file_name, headers, data):
         separator_string()
     except Exception as e:
         print(f"Error creating the file: {e}")
+
+
+def get_headers(class_type):
+    headers = []
+    params = inspect.signature(class_type.__init__).parameters
+    for param_name, param in params.items():
+        if (
+            param_name == "self"
+            or param_name == "locker_data"
+            or param_name == "membership_data"
+        ):
+            continue
+
+        headers.append(param_name.upper())
+    return headers
