@@ -490,3 +490,12 @@ class Gym:
                 print(f"No assigned locker found for client {client_id}.")
         else:
             print(f"Client {client_id} not found.")
+    
+    def delete_client_membership(self, client_id):
+        """Delete a client membership."""
+        client = self.get_client(client_id)
+        dummy_membership = Membership(
+            membership_type="None", membership_active=False, membership_cost=0, membership_duration=30
+        )
+        client.set_membership_data = dummy_membership
+        print("Membership data deleted. New None membership assigned.")
