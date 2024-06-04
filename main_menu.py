@@ -1,4 +1,5 @@
 from gym_class import Gym
+
 from commons import (
     options_input,
     get_current_date,
@@ -11,6 +12,7 @@ from membership_class import Membership
 import inspect
 from lockers_class import Locker
 from user_class_gym import Client
+from datetime import datetime
 
 michael_gym.delete_client_membership(3332213)
 client = michael_gym.get_client(3332213)
@@ -80,9 +82,29 @@ while True:
             print("-----------------------------------------")
             op1 = options_input(ERROR_MESSAGE)
             if op1 == 1:
-                client = get_params_peer_class(Client)
-                type_membership = str(input("Enter membership type"))
-                michael_gym.add_client(client.get_client_id, client.get_name, client.get_last_name, client.get_age, client.get_phone_number, client.get_membership_active, type_membership)
+                client_id = int(input("Enter the client document: "))
+                client_name = input("Enter the client name: ")
+                client_last_name = input("Enter the client last name: ")
+                client_age = int(input("Enter the client age: "))
+                client_phone = input("Enter the client phone number: ")
+                hoy = datetime.now()
+                fecha_formateada = hoy.strftime("%Y-%m-%d")
+                separator_string()
+                print("Select the type of membership the client wants")
+                print("1. Daily")
+                print("2. Monthly")
+                print("3. Three Months")
+                Type = str(input())
+                if Type == "1":
+                    Type = "Daily"
+                elif Type == "2":
+                    Type = "Monthly"
+                elif Type == "3":
+                    Type = "Three Months"
+                else:
+                    print("Invalid option")
+                    
+                michael_gym.add_client(client_id, client_name, client_last_name, client_age, client_phone, True, Type ,True, fecha_formateada, False)
             if op1 == 2:
                 separator_string("Verify customer")
                 id_customer = int(input("Enter the customer's identity document: "))
