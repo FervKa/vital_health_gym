@@ -80,9 +80,32 @@ while True:
             print("-----------------------------------------")
             op1 = options_input(ERROR_MESSAGE)
             if op1 == 1:
-                separator_string("Enter the following data")
-                id_client = str(input("Client id"))
-                michael_gym.add_client()
+                client = get_params_peer_class(Client)
+                type_membership = str(input("Enter membership type"))
+                michael_gym.add_client(client.get_client_id, client.get_name, client.get_last_name, client.get_age, client.get_phone_number, client.get_membership_active, type_membership)
+            if op1 == 2:
+                separator_string("Verify customer")
+                id_customer = int(input("Enter the customer's identity document: "))
+                client = michael_gym.get_client(id_customer)
+                separator_string(f"Data customer with id: {id_customer}")
+                print(client)
+                print(f"The user with id: {id_customer} and name {client.get_name} was found in the database succefully")
+            if op1 == 3:
+                separator_string("Disable customer")
+                id_customer = int(input("Enter the customer's identity document: "))
+                michael_gym.delete_client_membership(id_customer)
+                client = michael_gym.get_client(id_customer)
+                client.set_membership_active = False
+                client.set_is_active = False
+                separator_string(f"Customer with id: {id_customer} data")
+                print(client)
+                print(f"The user with id: {id_customer} was disabled succefully")
+                
+            if op1 == 4:
+                separator_string("Update customer data")
+                michael_gym.update_client(Client)
+                
+                
             if op1 == 5:
                 break
 

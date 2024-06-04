@@ -138,6 +138,7 @@ class Gym:
             for client in self.__clients_list:
                 if client.get_client_id == client_id:
                     client_found = True
+                    print()
                     return client
             if not client_found:
                 print(f"Client {client_id} not found.")
@@ -499,3 +500,10 @@ class Gym:
         )
         client.set_membership_data = dummy_membership
         print("Membership data deleted. New None membership assigned.")
+
+    def print_clients_list(self):
+        separator_string(f"printing the customer list")
+        for client in self.__clients_list:
+            separator_string("Clien with id: {client.get_client_id}")
+            print(client)
+            separator_string()
