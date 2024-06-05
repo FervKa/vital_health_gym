@@ -213,6 +213,18 @@ class Client:
 
     def __repr__(self):
         return self.__str__()
+    
+    def print_membership_info(self):
+        print(
+            f"Membership Details:\n"
+            f"  Type: {self.__membership_data.get_membership_type}\n"
+            f"  Duration: {self.__membership_data.get_membership_duration} days\n"
+            f"  Price: {format_in_currency(self.__membership_data.get_membership_cost)}\n"
+            f"  Active: {'Yes' if self.__membership_active else 'No'}\n"
+            f"  Remaining days: {self.__remaining_days}\n"
+            f"  Date of last payment: {self.__date_last_payment}\n"
+        )
+        
 
 """ 
 # Crear una lista de objetos Client

@@ -410,9 +410,9 @@ class Gym:
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
             separator_string(i)
-            print(f"Membership {i+1}: Type: {membership.get_membership_type()}")
-            print(f"Active: {membership.get_membership_active()}")
-            print(f"Cost: {membership.get_membership_cost()}")
+            print(f"Membership {i+1}: Type: {membership.get_membership_type}")
+            print(f"Active: {membership.get_membership_active}")
+            print(f"Cost: {membership.get_membership_cost}")
 
     def generate_report_current_clients(self):
         data_to_save = []
@@ -496,9 +496,10 @@ class Gym:
         """Delete a client membership."""
         client = self.get_client(client_id)
         dummy_membership = Membership(
-            membership_type="None", membership_active=False, membership_cost=0, membership_duration=30
+            membership_type="None", membership_active=False, membership_cost=0, membership_duration=0
         )
         client.set_membership_data = dummy_membership
+        client.set_membership_active = False
         print("Membership data deleted. New None membership assigned.")
 
     def print_clients_list(self):
@@ -507,3 +508,14 @@ class Gym:
             separator_string("Clien with id: {client.get_client_id}")
             print(client)
             separator_string()
+
+    def options_membership(self):
+        for i, memb in enumerate(self.__membership_list, start=1):
+            name = memb.get_membership_type
+            print(f"{i}. {name}")
+        print("Choose a option to update")
+        option = int(input())
+        for i, memb in enumerate(self.__membership_list, start=1):
+            if option == i:
+                return memb.get_membership_type
+        print("Choose a valid option")

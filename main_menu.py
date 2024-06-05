@@ -74,7 +74,7 @@ while True:
         while True:
             print("----------- Customer management -----------")
             print("select an option by entering the index number")
-            print("1. Add customer")
+            print("1. Add custo mer")
             print("2. Verify customer")
             print("3. Disable customer")
             print("4. Update customer data.")
@@ -96,22 +96,22 @@ while True:
                 print("3. Three Months")
                 Type = str(input())
                 if Type == "1":
-                    Type = "Daily"
+                    opcion = "Daily"
                 elif Type == "2":
-                    Type = "Monthly"
+                    opcion = "Monthly"
                 elif Type == "3":
-                    Type = "Three Months"
+                    opcion = "Three Months"
                 else:
                     print("Invalid option")
                     
-                michael_gym.add_client(client_id, client_name, client_last_name, client_age, client_phone, True, Type ,True, fecha_formateada, False)
+                michael_gym.add_client(client_id, client_name, client_last_name, client_age, client_phone, True, opcion ,True, fecha_formateada, False)
             if op1 == 2:
                 separator_string("Verify customer")
                 id_customer = int(input("Enter the customer's identity document: "))
                 client = michael_gym.get_client(id_customer)
                 separator_string(f"Data customer with id: {id_customer}")
                 print(client)
-                print(f"The user with id: {id_customer} and name {client.get_name} was found in the database succefully")
+                print(f"The user with id: {id_customer} and name {client.sget_name} was found in the database succefully")
             if op1 == 3:
                 separator_string("Disable customer")
                 id_customer = int(input("Enter the customer's identity document: "))
@@ -136,11 +136,35 @@ while True:
             print("----------- Membership Management -----------")
             print("select an option by entering the index number")
             print("1. Update membership")
-            print("2. Add new membership")
+            print("2. Add new membership to the Gym")
             print("3. Disable membership")
             print("4. Back to previous menu")
             print("-----------------------------------------")
             op2 = options_input(ERROR_MESSAGE)
+            if op2 == 1:
+                separator_string("Update membership")
+                id_customer = int(input("Enter the customer's identity document: "))
+                separator_string("Memberships available")
+                print("Select the type of membership the client wants")
+                op_membership = michael_gym.options_membership()
+                michael_gym.update_client_membership(id_customer, op_membership)
+                client = michael_gym.get_client(id_customer)
+                print(client.print_membership_info)
+                print(f"The membership of the client with id: {id_customer} was updated succefully")
+            if op2 == 2:
+                michael_gym.create_membership()
+                print("The new membership was added succefully")
+                print("Now current memberships are: ")
+                michael_gym.print_membership_list()
+
+            if op2 == 3:
+                separator_string("Disable membership")
+                id_customer = int(input("Enter the customer's identity document: "))
+                michael_gym.delete_client_membership(id_customer)
+                client = michael_gym.get_client(id_customer)
+                client.print_membership_info()
+                print(f"The membership of the client with id: {id_customer} was disabled succefully")
+
             if op2 == 4:
                 break
     if op == 3:
