@@ -144,7 +144,7 @@ def validate_a_directory(directory, subdirectory):
         return False
 
 
-def create_a_file(file_name, headers, data):
+def create_a_file(file_name, headers, data, gym_name):
     try:
         wb = Workbook()
         ws = wb.active
@@ -153,19 +153,21 @@ def create_a_file(file_name, headers, data):
             ws.append(row)
 
         report_type = file_name.split(".")[0]
+        gym_name_snake = convert_to_snake_case(gym_name)
         current_directory = os.getcwd()
-        subdirectory = os.path.join("reports")
-        directory_to_save = os.path.join(current_directory, subdirectory)
+        dir_report = os.path.join("reports")
+        dir_gym = os.path.join(dir_report, gym_name_snake)
+        directory_to_save = os.path.join(current_directory, dir_gym)
         reports_dir = os.path.join(directory_to_save, report_type)
         date_to_file = datetime.now().strftime("%Y%m%d%H%M%S")
         file_name_with_date = report_type + f"_{date_to_file}.xlsx"
         file_path = os.path.join(reports_dir, file_name_with_date)
         if validate_a_directory(directory_to_save, reports_dir):
             separator_string("Creating the directory...")
-            print(f"The directory '{subdirectory}' and '{report_type}' was created.")
+            print(f"The directory '{dir_report}' and '{report_type}' was created.")
 
         else:
-            separator_string(f"{subdirectory} already exists.")
+            separator_string(f"{dir_report} already exists.")
             print()
 
         separator_string("Creating the file...")
@@ -189,3 +191,9 @@ def get_headers(class_type):
 
         headers.append(param_name.upper())
     return headers
+
+def convert_to_snake_case(gym_name):
+    name = gym_name.lower()
+    name = name.replace(" ", "_")
+    return name
+    

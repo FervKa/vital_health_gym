@@ -48,19 +48,28 @@ while True:
     gym_option = options_input(ERROR_MESSAGE)
 
     if gym_option == 1:
-        for index, gym in enumerate(dummy_gyms):
-            separator_string(f"{index + 1} ")
-            print(
-                f"NIT: {gym.get_nit},\n"
-                f"Name: {gym.get_name},\n"
-                f"Address: {gym.get_adress},\n"
-            )
-        separator_string()
-        print("Select your gym: ")
-        print()
-        gym_op_selected = options_input(ERROR_MESSAGE)
-        gym_selected = dummy_gyms[gym_op_selected -1]
-        
+        while True:
+            for index, gym in enumerate(dummy_gyms):
+                separator_string(f"{index + 1} ")
+                print(
+                    f"NIT: {gym.get_nit},\n"
+                    f"Name: {gym.get_name},\n"
+                    f"Address: {gym.get_adress},\n"
+                )
+            separator_string()
+            print("Select your gym: ")
+            print()
+
+            GYM_OP_OPTION = int(options_input(ERROR_MESSAGE))
+
+            if 1 <= GYM_OP_OPTION <= len(dummy_gyms):
+                gym_selected = dummy_gyms[GYM_OP_OPTION - 1]
+                print(f"Gym selected: {gym_selected.get_name}")
+                break
+            else:
+                separator_string()
+                print("Error: Selection out of range. Please select a valid number.")
+
         while True:
             separator_string(f"Welcome to {gym_selected.get_name} ")
             print("Select an option by entering the index number: ")
@@ -76,11 +85,11 @@ while True:
 
             if op == 1:
                 while True:
-                    separator_string("user management ")
+                    separator_string("User management ")
                     print("Select an option by entering the index number: ")
                     print()
                     print("1. Add user.")
-                    print("2. Verify user.")
+                    print("2. Verify user exist.")
                     print("3. Delete user.")
                     print("4. Update user data.")
                     print("5. Show all users.")
@@ -88,29 +97,25 @@ while True:
                     separator_string()
                     op1 = options_input(ERROR_MESSAGE)
                     if op1 == 1:
-                        new_client = get_params_peer_class(Client, gym_selected.get_membership_list)
-                        print(f"Client '{new_client.get_name}' was created successfully...'")
+                        new_client = get_params_peer_class(
+                            Client, gym_selected.get_membership_list
+                        )
+                        gym_selected.save_user(new_client)
                     if op1 == 2:
                         separator_string("Verify user")
                         client_id = int(input("Enter the user's identity document: "))
-                        client = gym_selected.get_client_info(client_id)
+                        gym_selected.get_client_info(client_id)
                     if op1 == 3:
-                        cliend_id = int(input("Enter the customer's identity document: "))
-                        """ separator_string("Disable customer")
-                        gym_selected.delete_client_membership(id_customer)
-                        client = gym_selected.get_client(id_customer)
-                        client.set_membership_active = False
-                        client.set_is_active = False
-                        separator_string(f"Customer with id: {id_customer} data")
-                        print(client)
-                        print(f"The user with id: {id_customer} was disabled succefully") """
-                        
+                        cliend_id = int(
+                            input("Enter the customer's identity document: ")
+                        )
                         gym_selected.delete_client(cliend_id)
 
                     if op1 == 4:
                         separator_string("Update customer data")
-                        gym_selected.update_client(Client)
+                        gym_selected.update_client()
                     if op1 == 5:
+                        separator_string("Clients list ")
                         gym_selected.get_client()
                     if op1 == 6:
                         break
@@ -128,7 +133,9 @@ while True:
                     op2 = options_input(ERROR_MESSAGE)
                     if op2 == 1:
                         separator_string("Update membership")
-                        id_customer = int(input("Enter the customer's identity document: "))
+                        id_customer = int(
+                            input("Enter the customer's identity document: ")
+                        )
                         print("Select the type of membership the client wants")
                         gym_selected.update_client_membership(id_customer)
                         client = gym_selected.get_client(id_customer)
@@ -144,7 +151,9 @@ while True:
 
                     if op2 == 3:
                         separator_string("Disable membership")
-                        id_customer = int(input("Enter the customer's identity document: "))
+                        id_customer = int(
+                            input("Enter the customer's identity document: ")
+                        )
                         gym_selected.delete_client_membership(id_customer)
                         client = gym_selected.get_client(id_customer)
                         client.print_membership_info()
@@ -158,32 +167,41 @@ while True:
                 while True:
                     print("----------- Reports -----------")
                     print("select an option by entering the index number")
-                    print("1. Daily profit report")
-                    print("2. Current users report")
-                    print("3. New users report (joined less than a month ago)")
-                    print("4. Users who entered the gym on the day report")
-                    print("5. Daily general report")
-                    print("6. Back to previous menu")
+                    print("1. Daily profit report.")
+                    print("2. Current users report.")
+                    print("3. Attended users peer day.")
+                    print("4. Back to previous menu.")
                     print("-----------------------------------------")
-                    ERROR_MESSAGE = (
-                        "Error: You must enter a valid integer number. Please try again."
-                    )
+                    ERROR_MESSAGE = "Error: You must enter a valid integer number. Please try again."
                     op3 = options_input(ERROR_MESSAGE)
                     if op3 == 1:
-                        date_to_search = input("Enter the desired date")
-                        gym_selected.calculate_earning_peer_day(date_to_search)
-                        print(
-                            f"Excel file created succesfully for daily profit report of the date {date_to_search}"
-                        )
+                        while True:
+                            print()
+                            print("1. To enter a date. ")
+                            print("2. For today's report.  ")
+                            report_selected = options_input(ERROR_MESSAGE)
+                            if report_selected == 1:
+                                date_selected = input(
+                                    "Enter the date of the desired report: "
+                                )
+                                gym_selected.calculate_earning_peer_day(date_selected)
+                                break
+                            if report_selected == 2:
+                                gym_selected.calculate_earning_peer_day(
+                                    get_current_date()
+                                )
+                                break
+
                     if op3 == 2:
                         gym_selected.generate_report_current_clients()
-                        print("Excel file created succesfully for current customers report")
-
+                        print(
+                            "Excel file created succesfully for current customers report"
+                        )
                     if op3 == 3:
-                        date_to_search = input("Enter the desired date")
+                        date_to_search = input("Enter the desired date: ")
                         gym_selected.generate_report_day(date_to_search)
 
-                    if op3 == 7:
+                    if op3 == 4:
                         break
             if op == 4:
                 while True:
@@ -194,7 +212,9 @@ while True:
 
                         separator_string("Gym Acces")
                         print("enter the user's docume2nt you want to verify")
-                        id_customer = int(input("Enter the customer's identity document: "))
+                        id_customer = int(
+                            input("Enter the customer's identity document: ")
+                        )
                         gym_selected.handle_change_client_training(id_customer)
                     ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
                     if op4 == 2:
@@ -205,11 +225,10 @@ while True:
     if gym_option == 2:
         print("Create a gym")
         created_gym = get_params_peer_class(Gym)
-        
+
         dummy_gyms.append(created_gym)
         print(f"The gym {created_gym.get_name} was created succesfully")
-    
+
     if gym_option == 3:
         separator_string("See ya!")
         break
-

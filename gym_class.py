@@ -153,7 +153,7 @@ class Gym:
                 print(f"Client {client_id} not found.")
         else:
             for index, client in enumerate(self.__clients_list):
-                separator_string(f"{index} ")
+                separator_string(f"{index + 1} ")
                 print(
                     f"ID: {client.get_client_id},\n"
                     f"Name: {client.get_name} {client.get_last_name},\n"
@@ -167,7 +167,7 @@ class Gym:
                     f"Locker price: {format_in_currency(client.get_locker_data.get_locker_price) if client.get_locker_data is not None else format_in_currency(0)}"
                 )
 
-    def update_client(self, object_class):
+    def update_client(self):
         options = {}
         selected_key = None
         expected_type = {}
@@ -177,7 +177,7 @@ class Gym:
         separator_string()
         client_found = self.get_client(client_id_converted)
         if client_id and client_found:
-            params = inspect.signature(object_class.__init__).parameters
+            params = inspect.signature(Client.__init__).parameters
             for index, (param_name, param) in enumerate(params.items(), start=0):
                 expected_type = (
                     param.annotation if param.annotation != inspect._empty else str
@@ -226,7 +226,7 @@ class Gym:
             if client_found:
                 self.__clients_list.remove(client_found[0])
                 separator_string()
-                print(f"Client {client_id} has been deleted successfully...")
+                print(f"Client '{client_id}' has been deleted successfully...")
                 to_print = input("Do you want to print the clients list? (y/n): ")
                 if to_print.lower() == "y":
                     self.get_client()
@@ -401,7 +401,7 @@ class Gym:
                 aux.append(getattr(user, f"get_{header.lower()}"))
 
             data_to_save.append(aux)
-        create_a_file("current_clients.xlsx", headers, data_to_save)
+        create_a_file("current_clients.xlsx", headers, data_to_save, self.get_name)
 
         return (
             f"Gym(nit={self.nit}, name={self.name}, address={self.get_adress}, "
@@ -497,7 +497,7 @@ class Gym:
                 for header in headers:
                     aux.append(getattr(user, f"get_{header.lower()}"))
                 attended_clients_today.append(aux)
-        create_a_file("attended_clients_today.xlsx", headers, attended_clients_today)
+        create_a_file("attended_clients_today.xlsx", headers, attended_clients_today, self.get_name)
 
     def calculate_earning_peer_day(self, date_to_search):
         regards = 0
@@ -522,13 +522,15 @@ class Gym:
                 user_aux.append(format_in_currency(user.get_membership_data.get_membership_cost))
                 users_list.append(user_aux)
         users_list.append(["TOTAL_EARNED:", format_in_currency(regards)])
-        create_a_file("earning_peer_day.xlsx", headers, users_list)
+        create_a_file("earning_peer_day.xlsx", headers, users_list, self.get_name)
 
     def get_client_info(self, client_id):
         if client_id:
-            client_selected = self.get_client(client_id)
-            separator_string(f"Cliend found: {client_selected.get_name} ")
-            print(
+            try:
+                client_selected = self.get_client(client_id)
+                print(client_selected)
+                separator_string(f"Client found: {client_selected.get_name} ")
+                print(
                     f"ID: {client_selected.get_client_id},\n"
                     f"Name: {client_selected.get_name} {client_selected.get_last_name},\n"
                     f"Age: {client_selected.get_age},\n"
@@ -536,10 +538,20 @@ class Gym:
                     f"Membership active: {'Active' if client_selected.get_membership_active else 'Inactive'},\n"
                     f"Membership data: {client_selected.get_date_last_payment},\n"
                     f"Is active: {client_selected.get_is_active}, Created at: {client_selected.get_created_at},\n"
-                    f"Membership data: {client_selected.get_membership_data.get_membership_type},\n"
+                    f"Membership type: {client_selected.get_membership_data.get_membership_type if client_selected.get_membership_data else 'N/A'},\n"
                     f"Assigned locker: {client_selected.get_assigned_locker},\n"
-                    f"Locker price: {format_in_currency(client_selected.get_locker_data.get_locker_price) if client_selected.get_locker_data is not None else format_in_currency(0)}"
+                    f"Locker price: {format_in_currency(client_selected.get_locker_data.get_locker_price) if client_selected.get_locker_data else format_in_currency(0)}"
                 )
+            except (ValueError, KeyError):
+                print("Error: Client not found in the database.")
+            except AttributeError as e:
+                print(f"Error: Client not found in the database or an attribute is missing or not callable. - {e}")
         else:
             print("No client id selected")
     
+    def save_user(self, user):
+        if user:
+            self.__clients_list.append(user)
+            print(f"Client '{user.get_name}' was created successfully...'")
+        else:
+            print("Client required...")
