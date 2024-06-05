@@ -158,3 +158,13 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+mista/pyvenv.cfg
+mista/Scripts/activate
+mista/Scripts/activate.bat
+mista/Scripts/Activate.ps1
+mista/Scripts/deactivate.bat
+mista/Scripts/pip.exe
+mista/Scripts/pip3.12.exe
+mista/Scripts/pip3.exe
+mista/Scripts/python.exe
+mista/Scripts/pythonw.exe

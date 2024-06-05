@@ -1,5 +1,6 @@
 from datetime import datetime, date
 from commons import validate_id, get_current_date, format_in_currency
+from membership_class import Membership
 
 
 class Client:
@@ -11,7 +12,7 @@ class Client:
         age: int,
         phone_number: int,
         membership_active: bool,
-        membership_data: object,
+        membership_data: Membership,
         is_active: bool,
         created_at: date,
         date_last_payment: object,
@@ -125,8 +126,8 @@ class Client:
         return self.__membership_data
 
     @get_membership_data.setter
-    def set_membership_data(self, _membership_data, membership_class):
-        if isinstance(_membership_data, membership_class) or _membership_data is None:
+    def set_membership_data(self, _membership_data):
+        if isinstance(_membership_data, Membership) or _membership_data is None:
             self.__membership_data = _membership_data
         else:
             raise ValueError("Invalid membership data")
@@ -148,7 +149,7 @@ class Client:
 
     @get_assigned_locker.setter
     def set_assigned_locker(self, _get_assigned_locker):
-        if isinstance(_get_assigned_locker, int):
+        if isinstance(_get_assigned_locker, int) or _get_assigned_locker is None:
             self.__assigned_locker = _get_assigned_locker
         else:
             raise ValueError("Invalid locker number")
@@ -205,25 +206,25 @@ class Client:
             f"Membership active: {'Active' if self.__membership_active else 'Inactive'},\n"
             f"Membership data: {self.__date_last_payment},\n"
             f"Is active: {self.__is_active},\n Created at: {self.__created_at},\n"
-            f"Membership data: {self.__membership_data.get_membership_type},\n"
+            f"Membership Type: {self.__membership_data.get_membership_type},\n"
             f"Assigned locker: {self.__assigned_locker},\n"
             f"Locker price: {format_in_currency(self.__locker_data.get_locker_price) if self.__locker_data is not None else format_in_currency(0)}"
         )
 
     def __repr__(self):
         return self.__str__()
-
-    def delete_membership_data(self):
-        """# Creamos una nueva membresía dummy
-        dummy_membership = Membership(
-            membership_type="None", membership_active=False, membership_cost=0
+    
+    def print_membership_info(self):
+        print(
+            f"Membership Details:\n"
+            f"  Type: {self.__membership_data.get_membership_type}\n"
+            f"  Duration: {self.__membership_data.get_membership_duration} days\n"
+            f"  Price: {format_in_currency(self.__membership_data.get_membership_cost)}\n"
+            f"  Active: {'Yes' if self.__membership_active else 'No'}\n"
+            f"  Remaining days: {self.__remaining_days}\n"
+            f"  Date of last payment: {self.__date_last_payment}\n"
         )
-        # Asignamos la nueva membresía al cliente
-        self.set_membership_data = dummy_membership
-        print("Membership data deleted. New None membership assigned.")"""
-
-        # Este método va en gym
-
+        
 
 """ 
 # Crear una lista de objetos Client

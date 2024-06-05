@@ -53,14 +53,14 @@ class Membership:
     def set_membership_duration(self, membership_duration):
         self.__membership_duration = membership_duration
 
-    """ def __str__(self):
+    def __str__(self):
         return (
             f"Membership(membership_type={self.__membership_type}, "
             f"membership_active={self.__membership_active}, cost={self.__membership_cost}"
         )
 
     def __repr__(self):
-        return self.__str__() """
+        return self.__str__()
 
 
 """ 
