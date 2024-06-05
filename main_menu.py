@@ -144,10 +144,8 @@ while True:
             if op2 == 1:
                 separator_string("Update membership")
                 id_customer = int(input("Enter the customer's identity document: "))
-                separator_string("Memberships available")
                 print("Select the type of membership the client wants")
-                op_membership = michael_gym.options_membership()
-                michael_gym.update_client_membership(id_customer, op_membership)
+                michael_gym.update_client_membership(id_customer)
                 client = michael_gym.get_client(id_customer)
                 print(client.print_membership_info)
                 print(f"The membership of the client with id: {id_customer} was updated succefully")

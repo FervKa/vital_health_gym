@@ -206,7 +206,7 @@ class Client:
             f"Membership active: {'Active' if self.__membership_active else 'Inactive'},\n"
             f"Membership data: {self.__date_last_payment},\n"
             f"Is active: {self.__is_active},\n Created at: {self.__created_at},\n"
-            f"Membership data: {self.__membership_data.get_membership_type},\n"
+            f"Membership Type: {self.__membership_data.get_membership_type},\n"
             f"Assigned locker: {self.__assigned_locker},\n"
             f"Locker price: {format_in_currency(self.__locker_data.get_locker_price) if self.__locker_data is not None else format_in_currency(0)}"
         )

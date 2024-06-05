@@ -346,7 +346,20 @@ class Gym:
             print(f"Client {client_id} not found...")
             separator_string()
 
-    def update_client_membership(self, client_id, membership_type):
+    def update_client_membership(self, client_id):
+        for i, memb in enumerate(self.__membership_list, start=1):
+            name = memb.get_membership_type
+            print(f"{i}. {name}")
+        print("Choose a option to update")
+        option = int(input("Please enter an number of option: "))
+        for i, memb in enumerate(self.__membership_list, start=1):
+            if option == i:
+                membership_type = memb.get_membership_type
+                print(f"The membership type is: {membership_type}")
+                break
+            else:
+                print("Invalid option.")
+        #update membership with membership_type choosed
         client_found = self.get_client(client_id)
         if client_found:
             membership_found = False
@@ -509,13 +522,13 @@ class Gym:
             print(client)
             separator_string()
 
-    def options_membership(self):
-        for i, memb in enumerate(self.__membership_list, start=1):
-            name = memb.get_membership_type
-            print(f"{i}. {name}")
-        print("Choose a option to update")
-        option = int(input())
-        for i, memb in enumerate(self.__membership_list, start=1):
-            if option == i:
-                return memb.get_membership_type
-        print("Choose a valid option")
+    # def options_membership(self):
+    #     for i, memb in enumerate(self.__membership_list, start=1):
+    #         name = memb.get_membership_type
+    #         print(f"{i}. {name}")
+    #     print("Choose a option to update")
+    #     option = int(input())
+    #     for i, memb in enumerate(self.__membership_list, start=1):
+    #         if option == i:
+    #             return memb.get_membership_type
+    #     print("Choose a valid option")
