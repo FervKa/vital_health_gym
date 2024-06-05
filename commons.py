@@ -3,6 +3,7 @@ import inspect
 import os
 from openpyxl import Workbook
 import stat
+from membership_class import Membership
 
 
 def get_current_date():
@@ -47,7 +48,7 @@ def save_user(users, class_type):
 def options_input(m_error):
     while True:
         try:
-            entrada = input("Ingresa un número entero: ")
+            entrada = input("Enter your selection: ")
             option_input = int(entrada)
             return option_input  # Salir del bucle si la conversión fue exitosa
         except ValueError:
@@ -67,12 +68,25 @@ def convert_value(value, expected_type):
         return value
 
 
-def get_params_peer_class(object_class):
+def get_params_peer_class(object_class, membership_list = []):
     separator_string(f"Create a {object_class.__name__}")
     params = inspect.signature(object_class.__init__).parameters
     attr_values = {}
     for param_name, param in params.items():
         expected_type = param.annotation if param.annotation != inspect._empty else str
+        if param_name == "membership_data":
+            for index, membership in enumerate(membership_list):
+                print(f"{index+1}. Membership: {membership.get_membership_type}")
+                
+        if param_name == "locker_data":
+            attr_values[param_name] = None
+            continue
+        elif param_name == "created_at":
+            attr_values[param_name] = ""
+            continue
+        elif param_name == "date_last_payment":
+            attr_values[param_name] = ""
+            continue
         if param_name == "self":  # Skip the 'self' parameter
             continue
         if expected_type.__name__ == "bool":
@@ -83,7 +97,10 @@ def get_params_peer_class(object_class):
         )
         separator_string()
         try:
-            attr_values[param_name] = convert_value(value, expected_type.__name__)
+            if param_name == "membership_data":
+                attr_values[param_name] = membership_list[convert_value(value, "int") - 1]
+            else:
+                attr_values[param_name] = convert_value(value, expected_type.__name__)
         except ValueError as e:
             print(
                 f"Error converting {param_name}: {e}, please write the correct value..."
@@ -92,7 +109,7 @@ def get_params_peer_class(object_class):
         except Exception as e:
             print(f"Unexpected error: {e}")
             break
-
+    
     class_created = object_class(**attr_values)
     return class_created
 

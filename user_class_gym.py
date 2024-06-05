@@ -10,13 +10,12 @@ class Client:
         name: str,
         last_name: str,
         age: int,
-        phone_number: int,
+        phone_number: str,
+        membership_data: object,
         membership_active: bool,
-        membership_data: Membership,
         is_active: bool,
         created_at: date,
-        date_last_payment: object,
-        is_training: bool,
+        date_last_payment: date,
         locker_data: object,
     ):
         self.__client_id = validate_id(client_id)
@@ -54,14 +53,14 @@ class Client:
             self.__locker_data = None
             """ print(f"Assigned locker: {self.__assigned_locker}") """
 
-        if is_training and (locker_data is not None):
-            """print(f"Locker state: {locker_data.get_locker_state}")"""
+        """ if is_training and (locker_data is not None):
+            print(f"Locker state: {locker_data.get_locker_state}")
             locker_data.set_locker_state = True
-            """ print(f"From training {is_training}: {locker_data.get_locker_id}") """
+            print(f"From training {is_training}: {locker_data.get_locker_id}")
         else:
-            """locker_data.set_state(False)"""
-            """ print(locker_data) """
-            """ print(f"From training: {is_training}") """
+            locker_data.set_state(False)
+            print(locker_data)
+            print(f"From training: {is_training}") """
 
     @property
     def get_client_id(self):
@@ -140,6 +139,7 @@ class Client:
     def set_is_training(self, _is_training):
         if isinstance(_is_training, bool):
             self.__is_training = _is_training
+            self.get_locker_data.set_locker_state = True
         else:
             raise ValueError("Invalid is_training value")
 

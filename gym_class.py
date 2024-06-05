@@ -153,7 +153,7 @@ class Gym:
                 print(f"Client {client_id} not found.")
         else:
             for index, client in enumerate(self.__clients_list):
-                separator_string(index)
+                separator_string(f"{index} ")
                 print(
                     f"ID: {client.get_client_id},\n"
                     f"Name: {client.get_name} {client.get_last_name},\n"
@@ -166,54 +166,6 @@ class Gym:
                     f"Assigned locker: {client.get_assigned_locker},\n"
                     f"Locker price: {format_in_currency(client.get_locker_data.get_locker_price) if client.get_locker_data is not None else format_in_currency(0)}"
                 )
-
-    def add_client(
-        self,
-        client_id,
-        name,
-        last_name,
-        age,
-        phone_number,
-        membership_active,
-        membership_type,
-        is_active,
-        created_at=None,
-        is_training=None,
-    ):
-        membership_data = []
-        locker_info = None
-        date_last_payment = None
-        for membership in self.__membership_list:
-            if membership.get_membership_type.lower() == membership_type:
-                membership_data.append(membership)
-
-        if is_training:
-            locker_info = self.assign_lockers(client_id, f"{name + " " + last_name}")
-
-        if created_at == get_current_date():
-            date_last_payment = created_at
-
-        user_data = Client(
-            client_id,
-            name,
-            last_name,
-            age,
-            phone_number,
-            membership_active,
-            membership_data[0],
-            is_active,
-            created_at,
-            date_last_payment,
-            is_training,
-            locker_info,
-        )
-
-        self.__clients_list.append(user_data)
-        separator_string()
-        print(
-            f"Client {name} has been added to the gym {self.get_name.capitalize()} successfully..."
-        )
-        separator_string()
 
     def update_client(self, object_class):
         options = {}
@@ -268,19 +220,23 @@ class Gym:
                 print(f"Client {client_id} not found...")
 
     def delete_client(self, client_id):
-        client_found = search_client(client_id, self.__clients_list)
-        if client_found:
-            self.__clients_list.remove(client_found[0])
-            separator_string()
-            print(f"Client {client_id} has been deleted successfully...")
-            to_print = input("Do you want to print the clients list? (y/n): ")
-            if to_print.lower() == "y":
-                self.get_client()
-            separator_string()
+        if client_id:
+            client_found = search_client(client_id, self.__clients_list)
+            
+            if client_found:
+                self.__clients_list.remove(client_found[0])
+                separator_string()
+                print(f"Client {client_id} has been deleted successfully...")
+                to_print = input("Do you want to print the clients list? (y/n): ")
+                if to_print.lower() == "y":
+                    self.get_client()
+                separator_string()
+            else:
+                separator_string()
+                print(f"Client {client_id} not found...")
+                separator_string()
         else:
-            separator_string()
-            print(f"Client {client_id} not found...")
-            separator_string()
+            print("Client id not provided...")
 
     def create_membership(self):
         try:
@@ -452,8 +408,8 @@ class Gym:
             f"clients={self.__clients_list}, lockers={self.__locker_list}, memberships={self.__membership_list})"
         )
 
-    def __repr__(self):
-        return self.__str__()
+    """ def __repr__(self):
+        return self.__str__() """
 
     def update_assigned_client_locker(self, client_id, locker_id=None):
         """Assign a locker to a client. If locker_id is provided, it will assign that locker if available. Otherwise, it assigns the first available locker."""
@@ -532,24 +488,6 @@ class Gym:
         client.set_membership_active = False
         print("Membership data deleted. New None membership assigned.")
 
-    def print_clients_list(self):
-        separator_string(f"printing the customer list")
-        for client in self.__clients_list:
-            separator_string("Clien with id: {client.get_client_id}")
-            print(client)
-            separator_string()
-
-    # def options_membership(self):
-    #     for i, memb in enumerate(self.__membership_list, start=1):
-    #         name = memb.get_membership_type
-    #         print(f"{i}. {name}")
-    #     print("Choose a option to update")
-    #     option = int(input())
-    #     for i, memb in enumerate(self.__membership_list, start=1):
-    #         if option == i:
-    #             return memb.get_membership_type
-    #     print("Choose a valid option")
-
     def generate_report_day(self, date_to_search):
         attended_clients_today = []
         headers = get_headers(Client)
@@ -566,7 +504,6 @@ class Gym:
         users_list = []
         headers = []
         params = inspect.signature(Client.__init__).parameters
-        data_to_save = []
         for param_name, param in params.items():
             if param_name == "self" or param_name == "locker_data" or param_name == "membership_data":
                 continue
@@ -586,3 +523,23 @@ class Gym:
                 users_list.append(user_aux)
         users_list.append(["TOTAL_EARNED:", format_in_currency(regards)])
         create_a_file("earning_peer_day.xlsx", headers, users_list)
+
+    def get_client_info(self, client_id):
+        if client_id:
+            client_selected = self.get_client(client_id)
+            separator_string(f"Cliend found: {client_selected.get_name} ")
+            print(
+                    f"ID: {client_selected.get_client_id},\n"
+                    f"Name: {client_selected.get_name} {client_selected.get_last_name},\n"
+                    f"Age: {client_selected.get_age},\n"
+                    f"Phone number: +(57) {client_selected.get_phone_number},\n"
+                    f"Membership active: {'Active' if client_selected.get_membership_active else 'Inactive'},\n"
+                    f"Membership data: {client_selected.get_date_last_payment},\n"
+                    f"Is active: {client_selected.get_is_active}, Created at: {client_selected.get_created_at},\n"
+                    f"Membership data: {client_selected.get_membership_data.get_membership_type},\n"
+                    f"Assigned locker: {client_selected.get_assigned_locker},\n"
+                    f"Locker price: {format_in_currency(client_selected.get_locker_data.get_locker_price) if client_selected.get_locker_data is not None else format_in_currency(0)}"
+                )
+        else:
+            print("No client id selected")
+    

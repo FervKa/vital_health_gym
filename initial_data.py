@@ -44,12 +44,11 @@ dummy_users = [
         "Murillo",
         23,
         "5555555555",
-        True,
         dummy_memberships[2],
         True,
-        "2024-05-25",
-        "2024-05-25",
         True,
+        "2024-05-25",
+        "2024-05-25",
         dummy_lockers[0],
     ),
     Client(
@@ -58,12 +57,11 @@ dummy_users = [
         "Jaramillo",
         32,
         "2222222222",
-        True,
         dummy_memberships[2],
         True,
-        "2024-05-25",
-        "2024-05-25",
         True,
+        "2024-05-25",
+        "2024-05-25",
         dummy_lockers[1],
     ),
     Client(
@@ -72,12 +70,11 @@ dummy_users = [
         "Molina",
         21,
         "3333333333",
-        True,
         dummy_memberships[2],
+        True,
         True,
         "2024-05-25",
         "2024-05-24",
-        True,
         dummy_lockers[2],
     ),
     Client(
@@ -86,12 +83,11 @@ dummy_users = [
         "Molina",
         19,
         "4444444444",
-        True,
         dummy_memberships[2],
+        True,
         True,
         get_current_date(),
         "2024-05-24",
-        True,
         dummy_lockers[3],
     ),
     Client(
@@ -100,12 +96,11 @@ dummy_users = [
         "Molina",
         24,
         "6666666666",
-        True,
         dummy_memberships[2],
+        True,
         True,
         "2024-05-25",
         "2024-05-24",
-        True,
         dummy_lockers[4],
     ),
     Client(
@@ -114,12 +109,11 @@ dummy_users = [
         "Espinoza",
         46,
         "7777777777",
-        True,
         dummy_memberships[2],
+        True,
         False,
         get_current_date(),
         "2024-05-24",
-        False,
         None,
     ),
 ]
@@ -130,3 +124,11 @@ michael_gym = Gym(3221231, "Michael Gym", "Calle 123")
 michael_gym.set_clients_list = dummy_users
 michael_gym.set_locker_list = dummy_lockers
 michael_gym.set_membership_list = dummy_memberships
+
+
+# ------------ Gym list --------------#
+dummy_gyms = [
+    michael_gym,
+    Gym(2121212, "Stiven Gym", "Calle 13 #24-2"),
+    Gym(21221, "Boulevard Gym", "Avenue 34A 1250 Garden Street"),
+]
