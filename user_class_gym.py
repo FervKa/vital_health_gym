@@ -206,13 +206,25 @@ class Client:
             f"Membership active: {'Active' if self.__membership_active else 'Inactive'},\n"
             f"Membership data: {self.__date_last_payment},\n"
             f"Is active: {self.__is_active},\n Created at: {self.__created_at},\n"
-            f"Membership data: {self.__membership_data.get_membership_type},\n"
+            f"Membership Type: {self.__membership_data.get_membership_type},\n"
             f"Assigned locker: {self.__assigned_locker},\n"
             f"Locker price: {format_in_currency(self.__locker_data.get_locker_price) if self.__locker_data is not None else format_in_currency(0)}"
         )
 
     def __repr__(self):
         return self.__str__()
+    
+    def print_membership_info(self):
+        print(
+            f"Membership Details:\n"
+            f"  Type: {self.__membership_data.get_membership_type}\n"
+            f"  Duration: {self.__membership_data.get_membership_duration} days\n"
+            f"  Price: {format_in_currency(self.__membership_data.get_membership_cost)}\n"
+            f"  Active: {'Yes' if self.__membership_active else 'No'}\n"
+            f"  Remaining days: {self.__remaining_days}\n"
+            f"  Date of last payment: {self.__date_last_payment}\n"
+        )
+        
 
 """ 
 # Crear una lista de objetos Client
