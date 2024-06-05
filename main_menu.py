@@ -1,4 +1,5 @@
 from gym_class import Gym
+
 from commons import (
     options_input,
     get_current_date,
@@ -11,7 +12,11 @@ from membership_class import Membership
 import inspect
 from lockers_class import Locker
 from user_class_gym import Client
+from datetime import datetime
 
+michael_gym.delete_client_membership(3332213)
+client = michael_gym.get_client(3332213)
+print(client.get_membership_data)
 
 """ for membership in self.membership_list:
             print("#------------Membership data-----------#")
@@ -24,8 +29,7 @@ from user_class_gym import Client
 """ michael_gym.update_client(Client) """
 """ michael_gym.delete_client(5151213)
 michael_gym.handle_client_status(6634234) """
-""" michael_gym.generate_report_current_clients() """
-michael_gym.calculate_earning_peer_day("2024-05-25")
+michael_gym.generate_report_current_clients()
 
 """ test_gym = get_params_peer_class(Gym) """
 
@@ -59,71 +63,127 @@ test_gym.set_membership_list = dummy_memberships """
     print(test_gym.get_adress)   """
 
 # ---------- Manejo de excepciones en el input ----------#
-
-""" while True:
-    print("----------- Bienvenido -----------")
-    print("seleccione una opción ingresando el numero índice")
-    print("1. Gestión clientes")
-    print("2. Gestión membresías")
-    print("3. Reportes")
-    print("4. Ingreso al gimnasio")
+while True:
+    print("----------- Welcome -----------")
+    print("select an option by entering the index number")
+    print("1. Customer Management")
+    print("2. Membership Management")
+    print("3. Reports")
+    print("4. Gym Access")
     print("5. exit")
     print("-----------------------------------------")
 
-    ERROR_MESSAGE = "Error: Debes ingresar un número entero válido. Intenta nuevamente."
+    ERROR_MESSAGE = "Error: You must enter a valid integer number. Please try again."
     op = options_input(ERROR_MESSAGE)
 
     if op == 1:
         while True:
-            print("----------- Gestión clientes -----------")
-            print("seleccione una opción ingresando el numero índice")
-            print("1. Ingresar cliente")
-            print("2. Verificar cliente")
-            print("3. Deshabilitar cliente")
-            print("4. Actualizar datos del cliente.")
-            print("5. Volver al menú anterior")
+            print("----------- Customer management -----------")
+            print("select an option by entering the index number")
+            print("1. Add customer")
+            print("2. Verify customer")
+            print("3. Disable customer")
+            print("4. Update customer data.")
+            print("5. Back to previous menu")
             print("-----------------------------------------")
             op1 = options_input(ERROR_MESSAGE)
+            if op1 == 1:
+                client_id = int(input("Enter the client document: "))
+                client_name = input("Enter the client name: ")
+                client_last_name = input("Enter the client last name: ")
+                client_age = int(input("Enter the client age: "))
+                client_phone = input("Enter the client phone number: ")
+                hoy = datetime.now()
+                fecha_formateada = hoy.strftime("%Y-%m-%d")
+                separator_string()
+                print("Select the type of membership the client wants")
+                print("1. Daily")
+                print("2. Monthly")
+                print("3. Three Months")
+                Type = str(input())
+                if Type == "1":
+                    Type = "Daily"
+                elif Type == "2":
+                    Type = "Monthly"
+                elif Type == "3":
+                    Type = "Three Months"
+                else:
+                    print("Invalid option")
+
+                michael_gym.add_client(
+                    client_id,
+                    client_name,
+                    client_last_name,
+                    client_age,
+                    client_phone,
+                    True,
+                    Type,
+                    True,
+                    fecha_formateada,
+                    False,
+                )
+            if op1 == 2:
+                separator_string("Verify customer")
+                id_customer = int(input("Enter the customer's identity document: "))
+                client = michael_gym.get_client(id_customer)
+                separator_string(f"Data customer with id: {id_customer}")
+                print(client)
+                print(
+                    f"The user with id: {id_customer} and name {client.get_name} was found in the database succefully"
+                )
+            if op1 == 3:
+                separator_string("Disable customer")
+                id_customer = int(input("Enter the customer's identity document: "))
+                michael_gym.delete_client_membership(id_customer)
+                client = michael_gym.get_client(id_customer)
+                client.set_membership_active = False
+                client.set_is_active = False
+                separator_string(f"Customer with id: {id_customer} data")
+                print(client)
+                print(f"The user with id: {id_customer} was disabled succefully")
+
+            if op1 == 4:
+                separator_string("Update customer data")
+                michael_gym.update_client(Client)
+
             if op1 == 5:
                 break
 
     if op == 2:
         while True:
-            print("----------- Gestión membresías -----------")
-            print("seleccione una opción ingresando el numero índice")
-            print("1. Actualizar membresía")
-            print("2. Ingresar nueva membresía")
-            print("3. Deshabilitar membresía")
-            print("4. Volver al menú anterior")
+            print("----------- Membership Management -----------")
+            print("select an option by entering the index number")
+            print("1. Update membership")
+            print("2. Add new membership")
+            print("3. Disable membership")
+            print("4. Back to previous menu")
             print("-----------------------------------------")
             op2 = options_input(ERROR_MESSAGE)
             if op2 == 4:
                 break
     if op == 3:
         while True:
-            print("----------- Reportes -----------")
-            print("seleccione una opción ingresando el numero índice")
-            print("1. Reporte de ganancias del día")
-            print("2. Reporte de clientes actuales")
-            print("3. Reporte de clientes activos/inactivos")
-            print("4. Reporte de clientes nuevos (fecha de ingreso menor a un mes)")
-            print("5. Reporte usuarios que ingresaron en el día al gimnasio")
-            print("6. Reporte general diario")
-            print("7. Volver al menú anterior")
+            print("----------- Reports -----------")
+            print("select an option by entering the index number")
+            print("1. Daily profit report")
+            print("2. Current customers report")
+            print("3. Active/inactive customers report")
+            print("4. New customers report (joined less than a month ago)")
+            print("5. Users who entered the gym on the day report")
+            print("6. Daily general report")
+            print("7. Back to previous menu")
             print("-----------------------------------------")
             ERROR_MESSAGE = (
-                "Error: Debes ingresar un número entero válido. Intenta nuevamente."
+                "Error: You must enter a valid integer number. Please try again."
             )
             op3 = options_input(ERROR_MESSAGE)
             if op3 == 3:
                 while True:
-                    print(
-                        "----------- Reporte de clientes activos/inactivos -----------"
-                    )
-                    print("seleccione una opción ingresando el numero índice")
-                    print("1. Activos")
-                    print("2. Inactivos")
-                    print("3. Volver al menú anterior")
+                    print("----------- Active/Inactive customers report -----------")
+                    print("select an option by entering the index number")
+                    print("1. Active")
+                    print("2. Inactive")
+                    print("3. Back to previous menu")
                     print("-----------------------------------------")
                     op3_1 = options_input(ERROR_MESSAGE)
                     if op3_1 == 3:
@@ -132,12 +192,11 @@ test_gym.set_membership_list = dummy_memberships """
                 break
     if op == 4:
         while True:
-            print("----------- Ingreso al gimnasio -----------")
-            print("ingrese el documento del usuario que desea verificar")
+            print("----------- Gym Access -----------")
+            print("enter the user's document you want to verify")
             print("-----------------------------------------")
-            ERROR_MESSAGE = "Error: Debes ingresar un documento de indentidad valido, no uses puntos ni espacios."
+            ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
             op_id = options_input(ERROR_MESSAGE)
             break
     if op == 5:
         break
- """
