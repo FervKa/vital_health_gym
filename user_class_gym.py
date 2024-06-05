@@ -204,7 +204,7 @@ class Client:
             f"Age: {self.__age},\n"
             f"Phone number: +(57) {self.__phone_number},\n"
             f"Membership active: {'Active' if self.__membership_active else 'Inactive'},\n"
-            f"Membership data: {self.__date_last_payment},\n"
+            f"Membership date: {self.__date_last_payment},\n"
             f"Is active: {self.__is_active},\n Created at: {self.__created_at},\n"
             f"Membership Type: {self.__membership_data.get_membership_type},\n"
             f"Assigned locker: {self.__assigned_locker},\n"
