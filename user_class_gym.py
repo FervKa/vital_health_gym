@@ -197,7 +197,7 @@ class Client:
     def set_remaining_days(self, days):
         self.__remaining_days = days
 
-    def __str__(self):
+    """ def __str__(self):
         return (
             f"ID: {self.__client_id},\n"
             f"Name: {self.__name} {self.__last_name},\n"
@@ -225,6 +225,19 @@ class Client:
             f"  Date of last payment: {self.__date_last_payment}\n"
         )
         
+        return self.__str__() """
+
+    def delete_membership_data(self):
+        """# Creamos una nueva membresía dummy
+        dummy_membership = Membership(
+            membership_type="None", membership_active=False, membership_cost=0
+        )
+        # Asignamos la nueva membresía al cliente
+        self.set_membership_data = dummy_membership
+        print("Membership data deleted. New None membership assigned.")"""
+
+        # Este método va en gym
+
 
 """ 
 # Crear una lista de objetos Client

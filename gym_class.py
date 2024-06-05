@@ -143,7 +143,6 @@ class Gym:
 
     def get_client(self, client_id=None):
         client_found = False
-
         if client_id:
             for client in self.__clients_list:
                 if client.get_client_id == client_id:
@@ -567,25 +566,23 @@ class Gym:
         users_list = []
         headers = []
         params = inspect.signature(Client.__init__).parameters
+        data_to_save = []
         for param_name, param in params.items():
-            if param_name == "self" or param_name == "locker_data":
+            if param_name == "self" or param_name == "locker_data" or param_name == "membership_data":
                 continue
-            if param_name == "membership_data":
-                headers.append("membership_cost")
 
             headers.append(param_name.upper())
+        headers.append("MEMBERSHIP_COST")
 
         for user in self.__clients_list:
             if user.get_created_at == date_to_search:
-                aux = []
-                regards = +user.get_membership_data.get_membership_cost
-                for header in headers:
-                    if header.lower() != "membership_cost":
-                        aux.append(getattr(user, f"get_{header.lower()}"))
-                        if header == "membership_data":
-                            regards.append(user.get_membership_data.get_membership_cost)
-                users_list.append(aux)
-
-        print(regards)
-        print(users_list)
-        """ create_a_file("earning_peer_day.xlsx", headers, regards) """
+                user_aux = []
+                for index, header in enumerate(headers):
+                    if header.lower() != "membership_cost" and header.lower() != "membership_data":
+                        user_aux.append(getattr(user, f"get_{header.lower()}"))
+                    else:
+                        regards += user.get_membership_data.get_membership_cost
+                user_aux.append(format_in_currency(user.get_membership_data.get_membership_cost))
+                users_list.append(user_aux)
+        users_list.append(["TOTAL_EARNED:", format_in_currency(regards)])
+        create_a_file("earning_peer_day.xlsx", headers, users_list)
