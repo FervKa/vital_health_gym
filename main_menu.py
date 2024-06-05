@@ -1,5 +1,4 @@
 from gym_class import Gym
-
 from commons import (
     options_input,
     get_current_date,
@@ -29,8 +28,7 @@ print(client.get_membership_data)
 """ michael_gym.update_client(Client) """
 """ michael_gym.delete_client(5151213)
 michael_gym.handle_client_status(6634234) """
-""" michael_gym.generate_report_current_clients() """
-michael_gym.calculate_earning_peer_day("2024-05-25")
+michael_gym.generate_report_current_clients()
 
 """ test_gym = get_params_peer_class(Gym) """
 
@@ -81,7 +79,7 @@ while True:
         while True:
             print("----------- Customer management -----------")
             print("select an option by entering the index number")
-            print("1. Add custo mer")
+            print("1. Add customer")
             print("2. Verify customer")
             print("3. Disable customer")
             print("4. Update customer data.")
@@ -155,9 +153,10 @@ while True:
             print("----------- Membership Management -----------")
             print("select an option by entering the index number")
             print("1. Update membership")
-            print("2. Add new membership to the Gym")
-            print("3. Disable membership")
-            print("4. Back to previous menu")
+            print("2. Add new type membership to the Gym")
+            print("3. Disable type membership")
+            print("4. Disable membership client membership")
+            print("5. Back to previous menu")
             print("-----------------------------------------")
             op2 = options_input(ERROR_MESSAGE)
             if op2 == 1:
@@ -194,36 +193,44 @@ while True:
             print("select an option by entering the index number")
             print("1. Daily profit report")
             print("2. Current customers report")
-            print("3. Active/inactive customers report")
-            print("4. New customers report (joined less than a month ago)")
-            print("5. Users who entered the gym on the day report")
-            print("6. Daily general report")
-            print("7. Back to previous menu")
+            print("3. New customers report (joined less than a month ago)")
+            print("4. Users who entered the gym on the day report")
+            print("5. Daily general report")
+            print("6. Back to previous menu")
             print("-----------------------------------------")
             ERROR_MESSAGE = (
                 "Error: You must enter a valid integer number. Please try again."
             )
             op3 = options_input(ERROR_MESSAGE)
+            if op3 == 1:
+                date_to_search = input("Enter the desired date")
+                michael_gym.calculate_earning_peer_day(date_to_search)
+                print(f"Excel file created succesfully for daily profit report of the date {date_to_search}")
+            if op3 == 2:
+                michael_gym.generate_report_current_clients()
+                print("Excel file created succesfully for current customers report")
+
             if op3 == 3:
-                while True:
-                    print("----------- Active/Inactive customers report -----------")
-                    print("select an option by entering the index number")
-                    print("1. Active")
-                    print("2. Inactive")
-                    print("3. Back to previous menu")
-                    print("-----------------------------------------")
-                    op3_1 = options_input(ERROR_MESSAGE)
-                    if op3_1 == 3:
-                        break
+                date_to_search = input("Enter the desired date")
+                michael_gym.generate_report_day(date_to_search)
+               
             if op3 == 7:
                 break
     if op == 4:
         while True:
-            print("----------- Gym Access -----------")
-            print("enter the user's document you want to verify")
-            print("-----------------------------------------")
+            print("1. User access to the gym")
+            print("2. Back to previous menu")
+            op4 = options_input(ERROR_MESSAGE)
+            if op4 == 1:
+
+                separator_string("Gym Acces")
+                print("enter the user's docume2nt you want to verify")
+                id_customer = int(input("Enter the customer's identity document: "))
+                michael_gym.handle_change_client_training(id_customer)
             ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
-            op_id = options_input(ERROR_MESSAGE)
-            break
+            if op4 == 2:
+                break
+            # op_id = options_input(ERROR_MESSAGE)
     if op == 5:
+        print("Exiting the program....")
         break
