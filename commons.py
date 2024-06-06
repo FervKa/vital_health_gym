@@ -196,4 +196,14 @@ def convert_to_snake_case(gym_name):
     name = gym_name.lower()
     name = name.replace(" ", "_")
     return name
-    
+
+def valid_id(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+            return value
+        except ValueError:
+            print("Error: Invalid input. Please enter a valid Id.")
+
+
+

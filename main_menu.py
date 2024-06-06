@@ -5,7 +5,8 @@ from commons import (
     convert_value,
     separator_string,
     get_params_peer_class,
-)
+    valid_id
+)         
 from initial_data import (
     dummy_users,
     dummy_lockers,
@@ -103,10 +104,10 @@ while True:
                         gym_selected.save_user(new_client)
                     if op1 == 2:
                         separator_string("Verify user")
-                        client_id = int(input("Enter the user's identity document: "))
+                        client_id = valid_id(input("Enter the user's identity document: "))
                         gym_selected.get_client_info(client_id)
                     if op1 == 3:
-                        cliend_id = int(
+                        cliend_id = valid_id(
                             input("Enter the customer's identity document: ")
                         )
                         gym_selected.delete_client(cliend_id)
@@ -133,7 +134,7 @@ while True:
                     op2 = options_input(ERROR_MESSAGE)
                     if op2 == 1:
                         separator_string("Update membership")
-                        id_customer = int(
+                        id_customer = valid_id(
                             input("Enter the customer's identity document: ")
                         )
                         print("Select the type of membership the client wants")
@@ -151,7 +152,7 @@ while True:
 
                     if op2 == 3:
                         separator_string("Disable membership")
-                        id_customer = int(
+                        id_customer = valid_id(
                             input("Enter the customer's identity document: ")
                         )
                         gym_selected.delete_client_membership(id_customer)
@@ -181,9 +182,11 @@ while True:
                             print("2. For today's report.  ")
                             report_selected = options_input(ERROR_MESSAGE)
                             if report_selected == 1:
-                                date_selected = input(
-                                    "Enter the date of the desired report: "
-                                )
+                                try:
+                                    date_selected = datetime.strptime(input("Enter the date of the desired report (YYYY-MM-DD): "), "%Y-%m-%d")
+                                except ValueError:
+                                    print("Error: Invalid date format. Please enter the date in YYYY-MM-DD format.")
+                                    continue
                                 gym_selected.calculate_earning_peer_day(date_selected)
                                 break
                             if report_selected == 2:
@@ -199,7 +202,10 @@ while True:
                         )
                     if op3 == 3:
                         date_to_search = input("Enter the desired date: ")
-                        gym_selected.generate_report_day(date_to_search)
+                        try:
+                            gym_selected.generate_report_day(datetime.strptime(date_to_search, "%Y-%m-%d"))
+                        except ValueError:
+                            print("Error: Invalid date format. Please enter the date in YYYY-MM-DD format.")
 
                     if op3 == 4:
                         break
@@ -212,7 +218,7 @@ while True:
 
                         separator_string("Gym Acces")
                         print("enter the user's docume2nt you want to verify")
-                        id_customer = int(
+                        id_customer = valid_id(
                             input("Enter the customer's identity document: ")
                         )
                         gym_selected.handle_change_client_training(id_customer)
