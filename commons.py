@@ -68,7 +68,7 @@ def convert_value(value, expected_type):
         return value
 
 
-def get_params_peer_class(object_class, membership_list = []):
+def get_params_peer_class(object_class, membership_list=[]):
     separator_string(f"Create a {object_class.__name__}")
     params = inspect.signature(object_class.__init__).parameters
     attr_values = {}
@@ -77,7 +77,7 @@ def get_params_peer_class(object_class, membership_list = []):
         if param_name == "membership_data":
             for index, membership in enumerate(membership_list):
                 print(f"{index+1}. Membership: {membership.get_membership_type}")
-                
+
         if param_name == "locker_data":
             attr_values[param_name] = None
             continue
@@ -98,7 +98,9 @@ def get_params_peer_class(object_class, membership_list = []):
         separator_string()
         try:
             if param_name == "membership_data":
-                attr_values[param_name] = membership_list[convert_value(value, "int") - 1]
+                attr_values[param_name] = membership_list[
+                    convert_value(value, "int") - 1
+                ]
             else:
                 attr_values[param_name] = convert_value(value, expected_type.__name__)
         except ValueError as e:
@@ -109,7 +111,7 @@ def get_params_peer_class(object_class, membership_list = []):
         except Exception as e:
             print(f"Unexpected error: {e}")
             break
-    
+
     class_created = object_class(**attr_values)
     return class_created
 
@@ -192,10 +194,12 @@ def get_headers(class_type):
         headers.append(param_name.upper())
     return headers
 
+
 def convert_to_snake_case(gym_name):
     name = gym_name.lower()
     name = name.replace(" ", "_")
     return name
+
 
 def valid_id(prompt):
     while True:
@@ -203,7 +207,4 @@ def valid_id(prompt):
             value = int(input(prompt))
             return value
         except ValueError:
-            print("Error: Invalid input. Please enter a valid Id.")
-
-
-
+            print("Error: Invalid input. Please enter a valid ID: ")

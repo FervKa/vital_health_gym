@@ -5,8 +5,8 @@ from commons import (
     convert_value,
     separator_string,
     get_params_peer_class,
-    valid_id
-)         
+    valid_id,
+)
 from initial_data import (
     dummy_users,
     dummy_lockers,
@@ -35,6 +35,9 @@ print(client.get_name) """
 """
 
 gym_selected = None
+
+michael_gym.delete_membership("Daily")
+michael_gym.print_membership_list()
 
 while True:
     separator_string("Gym administration ")
@@ -79,7 +82,7 @@ while True:
             print("2. Membership Management.")
             print("3. Reports.")
             print("4. Gym Access.")
-            print("5. Exit.")
+            print("5. Back to previous menu..")
             separator_string()
 
             op = options_input(ERROR_MESSAGE)
@@ -94,7 +97,9 @@ while True:
                     print("3. Delete user.")
                     print("4. Update user data.")
                     print("5. Show all users.")
-                    print("6. Back to previous menu.")
+                    print("6. Disable user membership.")
+                    print("7. Handle client status.")
+                    print("8. Back to previous menu.")
                     separator_string()
                     op1 = options_input(ERROR_MESSAGE)
                     if op1 == 1:
@@ -104,31 +109,48 @@ while True:
                         gym_selected.save_user(new_client)
                     if op1 == 2:
                         separator_string("Verify user")
-                        client_id = valid_id(input("Enter the user's identity document: "))
+                        client_id = valid_id("Enter the user's identity document: ")
                         gym_selected.get_client_info(client_id)
                     if op1 == 3:
                         cliend_id = valid_id(
-                            input("Enter the customer's identity document: ")
+                            input("Enter the users's identity document: ")
                         )
                         gym_selected.delete_client(cliend_id)
 
                     if op1 == 4:
                         separator_string("Update customer data")
                         gym_selected.update_client()
+
                     if op1 == 5:
                         separator_string("Clients list ")
                         gym_selected.get_client()
+
                     if op1 == 6:
+                        separator_string("Disable membership")
+                        id_customer = valid_id(
+                            input("Enter the customer's identity document: ")
+                        )
+                        gym_selected.delete_client_membership(id_customer)
+                        client = gym_selected.get_client(id_customer)
+                        client.print_membership_info()
+                        print(
+                            f"The membership of the client with id: {id_customer} was disabled succefully"
+                        )
+                    if op1 == 7:
+                        cliend_id = valid_id(
+                            input("Enter the users's identity document: ")
+                        )
+                        gym_selected.handle_client_status(cliend_id)
+
+                    if op1 == 8:
                         break
 
             if op == 2:
                 while True:
                     print("----------- Membership Management -----------")
                     print("select an option by entering the index number")
-                    print("1. Update membership")
-                    print("2. Add new type membership to the Gym")
-                    print("3. Disable type membership")
-                    print("4. Disable membership client membership")
+                    print("1. Update client membership.")
+                    print("2. Create a new gym membership.")
                     print("5. Back to previous menu")
                     print("-----------------------------------------")
                     op2 = options_input(ERROR_MESSAGE)
@@ -150,24 +172,12 @@ while True:
                         print("Now current memberships are: ")
                         gym_selected.print_membership_list()
 
-                    if op2 == 3:
-                        separator_string("Disable membership")
-                        id_customer = valid_id(
-                            input("Enter the customer's identity document: ")
-                        )
-                        gym_selected.delete_client_membership(id_customer)
-                        client = gym_selected.get_client(id_customer)
-                        client.print_membership_info()
-                        print(
-                            f"The membership of the client with id: {id_customer} was disabled succefully"
-                        )
-
-                    if op2 == 4:
+                    if op2 == 5:
                         break
             if op == 3:
                 while True:
                     print("----------- Reports -----------")
-                    print("select an option by entering the index number")
+                    print("Select an option by entering the index number")
                     print("1. Daily profit report.")
                     print("2. Current users report.")
                     print("3. Attended users peer day.")
@@ -183,9 +193,16 @@ while True:
                             report_selected = options_input(ERROR_MESSAGE)
                             if report_selected == 1:
                                 try:
-                                    date_selected = datetime.strptime(input("Enter the date of the desired report (YYYY-MM-DD): "), "%Y-%m-%d")
+                                    date_selected = datetime.strptime(
+                                        input(
+                                            "Enter the date of the desired report (YYYY-MM-DD): "
+                                        ),
+                                        "%Y-%m-%d",
+                                    )
                                 except ValueError:
-                                    print("Error: Invalid date format. Please enter the date in YYYY-MM-DD format.")
+                                    print(
+                                        "Error: Invalid date format. Please enter the date in YYYY-MM-DD format."
+                                    )
                                     continue
                                 gym_selected.calculate_earning_peer_day(date_selected)
                                 break
@@ -203,9 +220,13 @@ while True:
                     if op3 == 3:
                         date_to_search = input("Enter the desired date: ")
                         try:
-                            gym_selected.generate_report_day(datetime.strptime(date_to_search, "%Y-%m-%d"))
+                            gym_selected.generate_report_day(
+                                datetime.strptime(date_to_search, "%Y-%m-%d")
+                            )
                         except ValueError:
-                            print("Error: Invalid date format. Please enter the date in YYYY-MM-DD format.")
+                            print(
+                                "Error: Invalid date format. Please enter the date in YYYY-MM-DD format."
+                            )
 
                     if op3 == 4:
                         break
@@ -215,7 +236,6 @@ while True:
                     print("2. Back to previous menu")
                     op4 = options_input(ERROR_MESSAGE)
                     if op4 == 1:
-
                         separator_string("Gym Acces")
                         print("enter the user's docume2nt you want to verify")
                         id_customer = valid_id(
@@ -225,7 +245,6 @@ while True:
                     ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
                     if op4 == 2:
                         break
-                    # op_id = options_input(ERROR_MESSAGE)
             if op == 5:
                 break
     if gym_option == 2:

@@ -107,10 +107,7 @@ class Client:
 
     @get_phone_number.setter
     def set_phone_number(self, _phone_number):
-        if isinstance(_phone_number, int):
-            self.__phone_number = _phone_number
-        else:
-            raise ValueError("Invalid phone number")
+        self.__phone_number = _phone_number
 
     @property
     def get_created_at(self):

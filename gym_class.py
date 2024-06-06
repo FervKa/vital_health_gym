@@ -202,7 +202,7 @@ class Gym:
                 client_instance = client_found
 
                 separator_string("Before update:")
-                print(self.get_client(client_id_converted))
+                self.get_client_info(client_id_converted)
 
                 setter_name = f"set_{selected_key}"
                 if hasattr(client_instance, setter_name):
@@ -212,7 +212,7 @@ class Gym:
                         convert_value(new_value, expected_type.__name__),
                     )
                     separator_string("After update:")
-                    print(self.get_client(client_id_converted))
+                    self.get_client_info(client_id_converted)
                 else:
                     print(f"No setter found for {selected_key}")
             else:
@@ -222,7 +222,7 @@ class Gym:
     def delete_client(self, client_id):
         if client_id:
             client_found = search_client(client_id, self.__clients_list)
-            
+
             if client_found:
                 self.__clients_list.remove(client_found[0])
                 separator_string()
@@ -312,43 +312,46 @@ class Gym:
             separator_string()
 
     def update_client_membership(self, client_id):
-        for i, memb in enumerate(self.__membership_list, start=1):
-            name = memb.get_membership_type
-            print(f"{i}. {name}")
-        print("Choose a option to update")
-        option = int(input("Please enter an number of option: "))
-        for i, memb in enumerate(self.__membership_list, start=1):
-            if option == i:
-                membership_type = memb.get_membership_type
-                print(f"The membership type is: {membership_type}")
-                break
-            else:
-                print("Invalid option.")
-        # update membership with membership_type choosed
-        client_found = self.get_client(client_id)
-        if client_found:
-            membership_found = False
-            for membership in self.__membership_list:
-                print(f"Checking membership type: {membership.get_membership_type}")
-                if membership.get_membership_type == membership_type:
-                    client_found.set_membership_data = membership
-                    separator_string()
-                    print(
-                        f"Membership for client: {client_found.get_name} has been updated...\n"
-                    )
-                    print(
-                        f"New membership: {client_found.get_membership_data.get_membership_type}"
-                    )
-                    separator_string()
-                    membership_found = True
+        try:
+            client_found = self.get_client(client_id)
+            for i, memb in enumerate(self.__membership_list, start=1):
+                name = memb.get_membership_type
+                print(f"{i}. {name}")
+            print("Choose a option to update")
+            option = int(input("Please enter an number of option: "))
+            for i, memb in enumerate(self.__membership_list, start=1):
+                if option == i:
+                    membership_type = memb.get_membership_type
+                    print(f"The membership type is: {membership_type}")
                     break
+                else:
+                    print("Invalid option.")
+            # update membership with membership_type choosed
+            if client_found:
+                membership_found = False
+                for membership in self.__membership_list:
+                    print(f"Checking membership type: {membership.get_membership_type}")
+                    if membership.get_membership_type == membership_type:
+                        client_found.set_membership_data = membership
+                        separator_string()
+                        print(
+                            f"Membership for client: {client_found.get_name} has been updated...\n"
+                        )
+                        print(
+                            f"New membership: {client_found.get_membership_data.get_membership_type}"
+                        )
+                        separator_string()
+                        membership_found = True
+                        break
 
-            if not membership_found:
-                print("Membership type not found in the list.")
-        else:
-            separator_string()
-            print(f"Client {client_id} not found...")
-            separator_string()
+                if not membership_found:
+                    print("Membership type not found in the list.")
+            else:
+                separator_string()
+                print(f"Client {client_id} not found...")
+                separator_string()
+        except ValueError as ve:
+            print(f"Invalid ID, user not found: {client_id}")
 
     def remaining_days_for_membership(self, client_id):
         client_found = self.get_client(client_id)
@@ -390,7 +393,7 @@ class Gym:
             separator_string(i)
             print(f"Membership {i+1}: Type: {membership.get_membership_type}")
             print(f"Active: {membership.get_membership_active}")
-            print(f"Cost: {membership.get_membership_cost}")
+            print(f"Cost: {format_in_currency(membership.get_membership_cost)}")
 
     def generate_report_current_clients(self):
         data_to_save = []
@@ -497,7 +500,12 @@ class Gym:
                 for header in headers:
                     aux.append(getattr(user, f"get_{header.lower()}"))
                 attended_clients_today.append(aux)
-        create_a_file("attended_clients_today.xlsx", headers, attended_clients_today, self.get_name)
+        create_a_file(
+            "attended_clients_today.xlsx",
+            headers,
+            attended_clients_today,
+            self.get_name,
+        )
 
     def calculate_earning_peer_day(self, date_to_search):
         regards = 0
@@ -505,7 +513,11 @@ class Gym:
         headers = []
         params = inspect.signature(Client.__init__).parameters
         for param_name, param in params.items():
-            if param_name == "self" or param_name == "locker_data" or param_name == "membership_data":
+            if (
+                param_name == "self"
+                or param_name == "locker_data"
+                or param_name == "membership_data"
+            ):
                 continue
 
             headers.append(param_name.upper())
@@ -515,11 +527,16 @@ class Gym:
             if user.get_created_at == date_to_search:
                 user_aux = []
                 for index, header in enumerate(headers):
-                    if header.lower() != "membership_cost" and header.lower() != "membership_data":
+                    if (
+                        header.lower() != "membership_cost"
+                        and header.lower() != "membership_data"
+                    ):
                         user_aux.append(getattr(user, f"get_{header.lower()}"))
                     else:
                         regards += user.get_membership_data.get_membership_cost
-                user_aux.append(format_in_currency(user.get_membership_data.get_membership_cost))
+                user_aux.append(
+                    format_in_currency(user.get_membership_data.get_membership_cost)
+                )
                 users_list.append(user_aux)
         users_list.append(["TOTAL_EARNED:", format_in_currency(regards)])
         create_a_file("earning_peer_day.xlsx", headers, users_list, self.get_name)
@@ -528,8 +545,7 @@ class Gym:
         if client_id:
             try:
                 client_selected = self.get_client(client_id)
-                print(client_selected)
-                separator_string(f"Client found: {client_selected.get_name} ")
+                separator_string(f"Client: {client_selected.get_name} ")
                 print(
                     f"ID: {client_selected.get_client_id},\n"
                     f"Name: {client_selected.get_name} {client_selected.get_last_name},\n"
@@ -545,13 +561,33 @@ class Gym:
             except (ValueError, KeyError):
                 print("Error: Client not found in the database.")
             except AttributeError as e:
-                print(f"Error: Client not found in the database or an attribute is missing or not callable. - {e}")
+                print(
+                    f"Error: Client not found in the database or an attribute is missing or not callable. - {e}"
+                )
         else:
             print("No client id selected")
-    
+
     def save_user(self, user):
         if user:
             self.__clients_list.append(user)
             print(f"Client '{user.get_name}' was created successfully...'")
         else:
             print("Client required...")
+
+    def delete_membership(self, membership_type):
+        if membership_type:
+            membership_found = False
+            for membership in self.__membership_list:
+                if membership.get_membership_type.lower() == membership_type.lower():
+                    self.__membership_list.remove(membership)
+                    separator_string()
+                    print(
+                        f"Membership '{membership_type}' has been deleted successfully..."
+                    )
+                    membership_found = True
+                    break
+
+            if not membership_found:
+                print(f"Membership '{membership_type}' not found...")
+        else:
+            print("Membership type not provided...")
