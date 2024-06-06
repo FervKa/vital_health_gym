@@ -1,5 +1,12 @@
 class Locker:
-    def __init__(self, locker_id:int, locker_state:bool, color:str, locker_type:str, client_id:int):
+    def __init__(
+        self,
+        locker_id: int,
+        locker_state: bool,
+        color: str,
+        locker_type: str,
+        client_id: int,
+    ):
         self.locker_id = locker_id
         self.locker_state = locker_state
         self.color = color
@@ -75,10 +82,10 @@ class Locker:
             self.is_assigned = True
             self.client_id = client_id
 
-    def __str__(self):
+    """ def __str__(self):
             return (f"Locker(ID: {self.locker_id}, State: {'Occupied' if self.locker_state else 'Available'}, "
                     f"Color: {self.color}, Type: {self.locker_type}, Price: {self.locker_price}, "
                     f"Assigned: {'Yes' if self.is_assigned else 'No'}, Client ID: {self.client_id})")
 
     def __repr__(self):
-        return self.__str__()
+        return self.__str__() """

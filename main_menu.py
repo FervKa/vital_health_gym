@@ -15,12 +15,17 @@ from initial_data import (
     dummy_gyms,
 )
 from membership_class import Membership
-import inspect
 from lockers_class import Locker
 from user_class_gym import Client
 from datetime import datetime
 
 gym_selected = None
+
+""" client_id = valid_id("Enter the customer's identity document: ")
+cliend_found = michael_gym.get_client(client_id)
+michael_gym.assign_lockers(client_id, cliend_found.get_name)
+print(f"ID: {client_id}")
+print(f"Name: {cliend_found.get_name}") """
 
 while True:
     separator_string("Gym administration ")
@@ -65,7 +70,8 @@ while True:
             print("2. Membership Management.")
             print("3. Reports.")
             print("4. Gym Access.")
-            print("5. Back to previous menu..")
+            print("5. Lockers Management.")
+            print("6. Back to previous menu..")
             separator_string()
 
             op = options_input(ERROR_MESSAGE)
@@ -86,10 +92,7 @@ while True:
                     separator_string()
                     op1 = options_input(ERROR_MESSAGE)
                     if op1 == 1:
-                        new_client = get_params_peer_class(
-                            Client, gym_selected.get_membership_list
-                        )
-                        gym_selected.save_user(new_client)
+                        gym_selected.save_user()
                     if op1 == 2:
                         separator_string("Verify user")
                         client_id = valid_id("Enter the user's identity document: ")
@@ -149,8 +152,6 @@ while True:
                     if op2 == 2:
                         gym_selected.create_membership()
                         print("The new membership was added succefully")
-                        print("Now current memberships are: ")
-                        gym_selected.print_membership_list()
 
                     if op2 == 3:
                         gym_selected.print_membership_list()
@@ -225,6 +226,35 @@ while True:
                     if op4 == 2:
                         break
             if op == 5:
+                separator_string("Lockers Management ")
+                print("Select an option by entering the index number: ")
+                print("1. Assign locker.")
+                print("2. Create locker.")
+                print("3. Show all lockers.")
+                print("4. Show empty lockers.")
+                print("5. Back to previous menu.")
+                separator_string()
+
+                lockers_option = options_input(ERROR_MESSAGE)
+                if lockers_option == 1:
+                    separator_string("Assign locker")
+                    client_id = valid_id("Enter the customer's identity document: ")
+                    print()
+                    cliend_found = gym_selected.get_client(client_id)
+                    gym_selected.assign_lockers(client_id, cliend_found.get_name)
+
+                if lockers_option == 2:
+                    gym_selected.create_locker()
+
+                if lockers_option == 3:
+                    gym_selected.print_all_lockers(True)
+
+                if lockers_option == 4:
+                    gym_selected.get_empty_lockers(True)
+
+                if lockers_option == 5:
+                    break
+            if op == 6:
                 break
     if gym_option == 2:
         print("Create a gym")

@@ -69,14 +69,15 @@ def convert_value(value, expected_type):
 
 
 def get_params_peer_class(object_class, membership_list=[]):
-    separator_string(f"Create a {object_class.__name__}")
+    separator_string(f"Create a {object_class.__name__} ")
     params = inspect.signature(object_class.__init__).parameters
     attr_values = {}
     for param_name, param in params.items():
         expected_type = param.annotation if param.annotation != inspect._empty else str
         if param_name == "membership_data":
-            for index, membership in enumerate(membership_list):
-                print(f"{index+1}. Membership: {membership.get_membership_type}")
+            if len(membership_list):
+                for index, membership in enumerate(membership_list):
+                    print(f"{index+1}. Membership: {membership.get_membership_type}")
 
         if param_name == "locker_data":
             attr_values[param_name] = None
@@ -89,8 +90,11 @@ def get_params_peer_class(object_class, membership_list=[]):
             continue
         if param_name == "self":  # Skip the 'self' parameter
             continue
+        if param_name == "phone_number":
+            print("The phone number must be 10 digits.")
         if expected_type.__name__ == "bool":
             print("Write '0' for Unavailable, '1' for Available.")
+
         value = input(
             f"Enter the value for '{param_name}', "
             f"(expected type: {param.annotation.__name__}): "

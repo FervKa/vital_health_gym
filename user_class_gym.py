@@ -136,7 +136,6 @@ class Client:
     def set_is_training(self, _is_training):
         if isinstance(_is_training, bool):
             self.__is_training = _is_training
-            self.get_locker_data.set_locker_state = True
         else:
             raise ValueError("Invalid is_training value")
 

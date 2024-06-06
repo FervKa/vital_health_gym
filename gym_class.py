@@ -1,4 +1,6 @@
 from user_class_gym import Client
+from membership_class import Membership
+from lockers_class import Locker
 from commons import (
     get_current_date,
     format_in_currency,
@@ -11,7 +13,6 @@ from commons import (
     validate_object_class,
     get_headers,
 )
-from membership_class import Membership
 import inspect
 from datetime import date, timedelta
 
@@ -85,12 +86,16 @@ class Gym:
     def print_all_lockers(self, to_print=False):
         if to_print:
             for locker in self.__locker_list:
+                separator_string(f"Locker: #{locker.get_locker_id} ")
                 print(
-                    f"Locker: #{locker.get_locker_id},\n"
                     f"Assigned to: {locker.get_client_id},\n"
                     f"Locker price: {format_in_currency(locker.get_locker_price)}\n"
+                    f"Color: {locker.get_color.capitalize()},\n"
+                    f"Type: {locker.get_locker_type.capitalize()},\n"
+                    f"State: {'Active' if locker.get_locker_state else 'Inactive'},\n"
+                    f"Is assigned: {'No' if not locker.get_is_assigned else locker.get_client_id},\n"
                 )
-                separator_string()
+
         else:
             return self.__locker_list
 
@@ -112,12 +117,15 @@ class Gym:
 
         if to_print and empty_lockers:
             for locker in empty_lockers:
+                separator_string(f"Locker: #{locker.get_locker_id} ")
                 print(
-                    f"Locker: #{locker.get_locker_id},\n"
                     f"Assigned to: {locker.get_client_id},\n"
                     f"Locker price: {format_in_currency(locker.get_locker_price)}\n"
+                    f"Color: {locker.get_color.capitalize()},\n"
+                    f"Type: {locker.get_locker_type.capitalize()},\n"
+                    f"State: {'Active' if locker.get_locker_state else 'Inactive'},\n"
+                    f"Is assigned: {'No' if not locker.get_is_assigned else locker.get_client_id},\n"
                 )
-                separator_string()
         elif not empty_lockers:
             return []
         else:
@@ -242,12 +250,10 @@ class Gym:
         try:
             membership = get_params_peer_class(Membership)
 
-            # Validate that the membership has been created correctly
             if not membership:
                 print("Error: Unable to obtain the parameters for the membership.")
                 return
 
-            # Check essential properties of the membership
             required_properties = [
                 "get_membership_type",
                 "get_membership_active",
@@ -262,7 +268,7 @@ class Gym:
 
             print(
                 f"Membership successfully created with type: {membership.get_membership_type}."
-            )  # Assuming 'membership' has a 'get_membership_type' property
+            )
         except AttributeError as ae:
             print(f"Attribute error: {str(ae)}")
 
@@ -278,8 +284,10 @@ class Gym:
         if client_found:
             if client_found.get_is_training:
                 client_found.set_is_training = False
+                client_found.set_locker_data = {}
             else:
                 client_found.set_is_training = True
+                self.assign_lockers(client_id, client_found.get_name)
             separator_string()
             print(
                 f"Training status for client: {client_found.get_name} has been updated...\n"
@@ -572,10 +580,11 @@ class Gym:
         else:
             print("No client id selected")
 
-    def save_user(self, user):
-        if user:
-            self.__clients_list.append(user)
-            print(f"Client '{user.get_name}' was created successfully...'")
+    def save_user(self):
+        new_client = get_params_peer_class(Client, self.get_membership_list)
+        if new_client:
+            self.__clients_list.append(new_client)
+            print(f"Client '{new_client.get_name}' was created successfully...'")
         else:
             print("Client required...")
 
@@ -596,3 +605,8 @@ class Gym:
                 print(f"Membership '{membership_type}' not found...")
         else:
             print("Membership type not provided...")
+
+    def create_locker(self):
+        locker = get_params_peer_class(Locker)
+        self.__locker_list.append(locker)
+        print(f"Locker #{locker.get_locker_id} created successfully...")
