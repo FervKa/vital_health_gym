@@ -1,31 +1,18 @@
+from datetime import datetime
 from gym_class import Gym
 from commons import (
     options_input,
     get_current_date,
-    convert_value,
     separator_string,
     get_params_peer_class,
     valid_id,
 )
 from initial_data import (
-    dummy_users,
-    dummy_lockers,
-    dummy_memberships,
-    michael_gym,
     dummy_gyms,
 )
-from membership_class import Membership
-from lockers_class import Locker
-from user_class_gym import Client
-from datetime import datetime
 
-gym_selected = None
 
-""" client_id = valid_id("Enter the customer's identity document: ")
-cliend_found = michael_gym.get_client(client_id)
-michael_gym.assign_lockers(client_id, cliend_found.get_name)
-print(f"ID: {client_id}")
-print(f"Name: {cliend_found.get_name}") """
+GYM_SELECTED = None
 
 while True:
     separator_string("Gym administration ")
@@ -55,15 +42,15 @@ while True:
             GYM_OP_OPTION = int(options_input(ERROR_MESSAGE))
 
             if 1 <= GYM_OP_OPTION <= len(dummy_gyms):
-                gym_selected = dummy_gyms[GYM_OP_OPTION - 1]
-                print(f"Gym selected: {gym_selected.get_name}")
+                GYM_SELECTED = dummy_gyms[GYM_OP_OPTION - 1]
+                print(f"Gym selected: {GYM_SELECTED.get_name}")
                 break
             else:
                 separator_string()
                 print("Error: Selection out of range. Please select a valid number.")
 
         while True:
-            separator_string(f"Welcome to {gym_selected.get_name} ")
+            separator_string(f"Welcome to {GYM_SELECTED.get_name} ")
             print("Select an option by entering the index number: ")
             print()
             print("1. User Management.")
@@ -92,37 +79,38 @@ while True:
                     separator_string()
                     op1 = options_input(ERROR_MESSAGE)
                     if op1 == 1:
-                        gym_selected.save_user()
+                        GYM_SELECTED.save_user()
                     if op1 == 2:
                         separator_string("Verify user")
                         client_id = valid_id("Enter the user's identity document: ")
-                        gym_selected.get_client_info(client_id)
+                        GYM_SELECTED.get_client_info(client_id)
                     if op1 == 3:
                         cliend_id = valid_id("Enter the customer's identity document: ")
-                        gym_selected.delete_client(cliend_id)
+                        GYM_SELECTED.delete_client(cliend_id)
 
                     if op1 == 4:
                         separator_string("Update customer data")
-                        gym_selected.update_client()
+                        GYM_SELECTED.update_client()
 
                     if op1 == 5:
                         separator_string("Clients list ")
-                        gym_selected.get_client()
+                        GYM_SELECTED.get_client()
 
                     if op1 == 6:
                         separator_string("Disable membership")
                         id_customer = valid_id(
                             "Enter the customer's identity document: "
                         )
-                        gym_selected.delete_client_membership(id_customer)
-                        client = gym_selected.get_client(id_customer)
+                        GYM_SELECTED.delete_client_membership(id_customer)
+                        client = GYM_SELECTED.get_client(id_customer)
                         client.print_membership_info()
                         print(
-                            f"The membership of the client with id: {id_customer} was disabled succefully"
+                            f"The membership of the client with id: {id_customer}\n"
+                            f" was disabled succefully"
                         )
                     if op1 == 7:
                         cliend_id = valid_id("Enter the customer's identity document: ")
-                        gym_selected.handle_client_status(cliend_id)
+                        GYM_SELECTED.handle_client_status(cliend_id)
 
                     if op1 == 8:
                         break
@@ -143,18 +131,18 @@ while True:
                             "Enter the customer's identity document: "
                         )
                         print("Select the type of membership the client wants")
-                        gym_selected.update_client_membership(id_customer)
-                        client = gym_selected.get_client(id_customer)
+                        GYM_SELECTED.update_client_membership(id_customer)
+                        client = GYM_SELECTED.get_client(id_customer)
                         print(client.print_membership_info)
                         print(
                             f"The membership of the client with id: {id_customer} was updated succefully"
                         )
                     if op2 == 2:
-                        gym_selected.create_membership()
+                        GYM_SELECTED.create_membership()
                         print("The new membership was added succefully")
 
                     if op2 == 3:
-                        gym_selected.print_membership_list()
+                        GYM_SELECTED.print_membership_list()
                     if op2 == 5:
                         break
             if op == 3:
@@ -184,23 +172,23 @@ while True:
                                         "Error: Invalid date format. Please enter the date in YYYY-MM-DD format."
                                     )
                                     continue
-                                gym_selected.calculate_earning_peer_day(date_selected)
+                                GYM_SELECTED.calculate_earning_peer_day(date_selected)
                                 break
                             if report_selected == 2:
-                                gym_selected.calculate_earning_peer_day(
+                                GYM_SELECTED.calculate_earning_peer_day(
                                     get_current_date()
                                 )
                                 break
 
                     if op3 == 2:
-                        gym_selected.generate_report_current_clients()
+                        GYM_SELECTED.generate_report_current_clients()
                         print(
                             "Excel file created succesfully for current customers report"
                         )
                     if op3 == 3:
                         date_to_search = input("Enter the desired date: ")
                         try:
-                            gym_selected.generate_report_day(
+                            GYM_SELECTED.generate_report_day(
                                 datetime.strptime(date_to_search, "%Y-%m-%d")
                             )
                         except ValueError:
@@ -221,7 +209,7 @@ while True:
                         id_customer = valid_id(
                             "Enter the customer's identity document: "
                         )
-                        gym_selected.handle_change_client_training(id_customer)
+                        GYM_SELECTED.handle_change_client_training(id_customer)
                     ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
                     if op4 == 2:
                         break
@@ -240,17 +228,17 @@ while True:
                     separator_string("Assign locker")
                     client_id = valid_id("Enter the customer's identity document: ")
                     print()
-                    cliend_found = gym_selected.get_client(client_id)
-                    gym_selected.assign_lockers(client_id, cliend_found.get_name)
+                    cliend_found = GYM_SELECTED.get_client(client_id)
+                    GYM_SELECTED.assign_lockers(client_id, cliend_found.get_name)
 
                 if lockers_option == 2:
-                    gym_selected.create_locker()
+                    GYM_SELECTED.create_locker()
 
                 if lockers_option == 3:
-                    gym_selected.print_all_lockers(True)
+                    GYM_SELECTED.print_all_lockers(True)
 
                 if lockers_option == 4:
-                    gym_selected.get_empty_lockers(True)
+                    GYM_SELECTED.get_empty_lockers(True)
 
                 if lockers_option == 5:
                     break

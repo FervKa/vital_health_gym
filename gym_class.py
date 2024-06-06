@@ -1,3 +1,5 @@
+import inspect
+from datetime import date, timedelta
 from user_class_gym import Client
 from membership_class import Membership
 from lockers_class import Locker
@@ -13,8 +15,6 @@ from commons import (
     validate_object_class,
     get_headers,
 )
-import inspect
-from datetime import date, timedelta
 
 
 class Gym:

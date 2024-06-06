@@ -1,9 +1,7 @@
-from datetime import datetime, date
+from datetime import datetime
 import inspect
 import os
 from openpyxl import Workbook
-import stat
-from membership_class import Membership
 
 
 def get_current_date():
@@ -75,7 +73,7 @@ def get_params_peer_class(object_class, membership_list=[]):
     for param_name, param in params.items():
         expected_type = param.annotation if param.annotation != inspect._empty else str
         if param_name == "membership_data":
-            if len(membership_list):
+            if membership_list:
                 for index, membership in enumerate(membership_list):
                     print(f"{index+1}. Membership: {membership.get_membership_type}")
 
@@ -88,7 +86,7 @@ def get_params_peer_class(object_class, membership_list=[]):
         elif param_name == "date_last_payment":
             attr_values[param_name] = ""
             continue
-        if param_name == "self":  # Skip the 'self' parameter
+        if param_name == "self":
             continue
         if param_name == "phone_number":
             print("The phone number must be 10 digits.")

@@ -81,11 +81,3 @@ class Locker:
         if client_id is not None:
             self.is_assigned = True
             self.client_id = client_id
-
-    """ def __str__(self):
-            return (f"Locker(ID: {self.locker_id}, State: {'Occupied' if self.locker_state else 'Available'}, "
-                    f"Color: {self.color}, Type: {self.locker_type}, Price: {self.locker_price}, "
-                    f"Assigned: {'Yes' if self.is_assigned else 'No'}, Client ID: {self.client_id})")
-
-    def __repr__(self):
-        return self.__str__() """
