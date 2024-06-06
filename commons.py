@@ -146,7 +146,7 @@ def validate_a_directory(directory, subdirectory):
         return False
 
 
-def create_a_file(file_name, headers, data, gym_name):
+def create_a_file(file_name, headers, data, gym_name, date_time=""):
     try:
         wb = Workbook()
         ws = wb.active
@@ -154,6 +154,7 @@ def create_a_file(file_name, headers, data, gym_name):
         for row in data:
             ws.append(row)
 
+        date_to_file = ""
         report_type = file_name.split(".")[0]
         gym_name_snake = convert_to_snake_case(gym_name)
         current_directory = os.getcwd()
@@ -161,7 +162,13 @@ def create_a_file(file_name, headers, data, gym_name):
         dir_gym = os.path.join(dir_report, gym_name_snake)
         directory_to_save = os.path.join(current_directory, dir_gym)
         reports_dir = os.path.join(directory_to_save, report_type)
-        date_to_file = datetime.now().strftime("%Y%m%d%H%M%S")
+        if date_time != "":
+            date_without_underscore = date_time.replace("-", "")
+            date_to_file = (
+                f"{date_without_underscore}{datetime.now().strftime('%H%M%S')}"
+            )
+        else:
+            date_to_file = datetime.now().strftime("%Y%m%d%H%M%S")
         file_name_with_date = report_type + f"_{date_to_file}.xlsx"
         file_path = os.path.join(reports_dir, file_name_with_date)
         if validate_a_directory(directory_to_save, reports_dir):
@@ -173,7 +180,7 @@ def create_a_file(file_name, headers, data, gym_name):
             print()
 
         separator_string("Creating the file...")
-        wb.save(file_path)
+        """ wb.save(file_path) """
         print(f"The file '{file_name_with_date}' was created.")
         separator_string()
     except Exception as e:

@@ -390,9 +390,11 @@ class Gym:
 
     def print_membership_list(self):
         for i, membership in enumerate(self.__membership_list):
-            separator_string(i)
-            print(f"Membership {i+1}: Type: {membership.get_membership_type}")
-            print(f"Active: {membership.get_membership_active}")
+            separator_string(f"{i+1} ")
+            print(f"Membership type: {membership.get_membership_type}")
+            print(
+                f"Active: {'Active' if membership.get_membership_active else 'Inactive'}"
+            )
             print(f"Cost: {format_in_currency(membership.get_membership_cost)}")
 
     def generate_report_current_clients(self):
@@ -505,6 +507,7 @@ class Gym:
             headers,
             attended_clients_today,
             self.get_name,
+            date_to_search,
         )
 
     def calculate_earning_peer_day(self, date_to_search):
@@ -539,7 +542,9 @@ class Gym:
                 )
                 users_list.append(user_aux)
         users_list.append(["TOTAL_EARNED:", format_in_currency(regards)])
-        create_a_file("earning_peer_day.xlsx", headers, users_list, self.get_name)
+        create_a_file(
+            "earning_peer_day.xlsx", headers, users_list, self.get_name, date_to_search
+        )
 
     def get_client_info(self, client_id):
         if client_id:

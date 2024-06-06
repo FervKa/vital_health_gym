@@ -20,24 +20,7 @@ from lockers_class import Locker
 from user_class_gym import Client
 from datetime import datetime
 
-""" client = get_params_peer_class(Client)
-
-gym_selected = michael_gym
-
-print(client.get_name) """
-
-""" for membership in self.membership_list:
-            print("#------------Membership data-----------#")
-            print(
-                f"Membership type: {membership.get_membership_type},\n"
-                f"Membership cost:  {"${:,.0f}".format(membership.get_membership_cost)}"
-            ) 
-"""
-
 gym_selected = None
-
-michael_gym.delete_membership("Daily")
-michael_gym.print_membership_list()
 
 while True:
     separator_string("Gym administration ")
@@ -112,9 +95,7 @@ while True:
                         client_id = valid_id("Enter the user's identity document: ")
                         gym_selected.get_client_info(client_id)
                     if op1 == 3:
-                        cliend_id = valid_id(
-                            input("Enter the users's identity document: ")
-                        )
+                        cliend_id = valid_id("Enter the customer's identity document: ")
                         gym_selected.delete_client(cliend_id)
 
                     if op1 == 4:
@@ -128,7 +109,7 @@ while True:
                     if op1 == 6:
                         separator_string("Disable membership")
                         id_customer = valid_id(
-                            input("Enter the customer's identity document: ")
+                            "Enter the customer's identity document: "
                         )
                         gym_selected.delete_client_membership(id_customer)
                         client = gym_selected.get_client(id_customer)
@@ -137,9 +118,7 @@ while True:
                             f"The membership of the client with id: {id_customer} was disabled succefully"
                         )
                     if op1 == 7:
-                        cliend_id = valid_id(
-                            input("Enter the users's identity document: ")
-                        )
+                        cliend_id = valid_id("Enter the customer's identity document: ")
                         gym_selected.handle_client_status(cliend_id)
 
                     if op1 == 8:
@@ -147,17 +126,18 @@ while True:
 
             if op == 2:
                 while True:
-                    print("----------- Membership Management -----------")
+                    separator_string("Membership Management ")
                     print("select an option by entering the index number")
                     print("1. Update client membership.")
                     print("2. Create a new gym membership.")
+                    print("3. Show all memberships.")
                     print("5. Back to previous menu")
-                    print("-----------------------------------------")
+                    separator_string()
                     op2 = options_input(ERROR_MESSAGE)
                     if op2 == 1:
                         separator_string("Update membership")
                         id_customer = valid_id(
-                            input("Enter the customer's identity document: ")
+                            "Enter the customer's identity document: "
                         )
                         print("Select the type of membership the client wants")
                         gym_selected.update_client_membership(id_customer)
@@ -172,17 +152,19 @@ while True:
                         print("Now current memberships are: ")
                         gym_selected.print_membership_list()
 
+                    if op2 == 3:
+                        gym_selected.print_membership_list()
                     if op2 == 5:
                         break
             if op == 3:
                 while True:
-                    print("----------- Reports -----------")
+                    separator_string("Reports ")
                     print("Select an option by entering the index number")
                     print("1. Daily profit report.")
                     print("2. Current users report.")
                     print("3. Attended users peer day.")
                     print("4. Back to previous menu.")
-                    print("-----------------------------------------")
+                    separator_string()
                     ERROR_MESSAGE = "Error: You must enter a valid integer number. Please try again."
                     op3 = options_input(ERROR_MESSAGE)
                     if op3 == 1:
@@ -193,11 +175,8 @@ while True:
                             report_selected = options_input(ERROR_MESSAGE)
                             if report_selected == 1:
                                 try:
-                                    date_selected = datetime.strptime(
-                                        input(
-                                            "Enter the date of the desired report (YYYY-MM-DD): "
-                                        ),
-                                        "%Y-%m-%d",
+                                    date_selected = input(
+                                        "Enter the date of the desired report (YYYY-MM-DD): "
                                     )
                                 except ValueError:
                                     print(
@@ -236,10 +215,10 @@ while True:
                     print("2. Back to previous menu")
                     op4 = options_input(ERROR_MESSAGE)
                     if op4 == 1:
-                        separator_string("Gym Acces")
+                        separator_string("Gym Access")
                         print("enter the user's docume2nt you want to verify")
                         id_customer = valid_id(
-                            input("Enter the customer's identity document: ")
+                            "Enter the customer's identity document: "
                         )
                         gym_selected.handle_change_client_training(id_customer)
                     ERROR_MESSAGE = "Error: You must enter a valid identification document, do not use periods or spaces."
